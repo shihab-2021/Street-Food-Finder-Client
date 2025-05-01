@@ -23,7 +23,7 @@ export default function JoinUs() {
         backgroundPosition: "1020px top",
       }}
     >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 font-sansita">
         <div className="shadow flex max-w-fit">
           <div
             style={{

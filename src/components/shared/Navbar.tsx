@@ -15,11 +15,14 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 // import { useProfileQuery } from "@/redux/features/auth/authApi";
-import Logo from "@/assets/LogoPro.png";
+import Logo from "@/assets/LogoProDarkBG.png";
 import Image from "next/image";
 // import { signOut, useSession } from "next-auth/react";
 // import { toast } from "sonner";
 import { useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { logout, useCurrentToken } from "@/redux/features/auth/authSlice";
+import { useProfileQuery } from "@/redux/features/auth/authApi";
 // import { useAppSelector } from "@/redux/hooks";
 
 // declare module "next-auth" {
@@ -64,6 +67,9 @@ export default function Navbar() {
 
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const token = useAppSelector(useCurrentToken);
+  const { data: profile } = useProfileQuery(token);
+  const dispatch = useAppDispatch();
 
   // Navigation items
   const navItems: NavItem[] = [
@@ -94,7 +100,7 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={`fixed bg-white top-0 left-0 right-0 z-50 transition-all font-arima duration-300 ease-in-out
+        className={`fixed bg-[#232536] top-0 left-0 right-0 z-50 transition-all font-arima duration-300 ease-in-out
       ${isScrolled ? " shadow-lg" : "shadow-sm "}`}
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -120,15 +126,15 @@ export default function Navbar() {
               <button className="text-gray-600 hover:text-blue-600 transition-colors duration-200 relative">
                 <SearchIcon className="h-5 w-5" />
               </button>
-              {/* {session?.user?.email && (
+              {token && (
                 <Link className="relative" href={"/dashboard/customer"}>
                   <ShoppingCart />
                   <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
-                    {cartData.totalQuantity}
+                    {/* {cartData.totalQuantity} */}0
                   </span>
                 </Link>
               )}
-              {session?.user?.email ? (
+              {token ? (
                 <div className="relative">
                   <button
                     onClick={toggleProfile}
@@ -148,7 +154,6 @@ export default function Navbar() {
                     <span className="text-gray-700">{profile?.data?.name}</span>
                   </button>
 
-                  
                   {isProfileOpen && (
                     <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
                       <Link
@@ -172,7 +177,7 @@ export default function Navbar() {
                         <span>Edit Profile</span>
                       </Link>
                       <button
-                        onClick={() => signOut()}
+                        onClick={() => dispatch(logout())}
                         className="flex items-center w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 gap-1"
                       >
                         <LogOutIcon className="h-5 w-5" />
@@ -185,20 +190,20 @@ export default function Navbar() {
                 <div className="flex items-center space-x-4">
                   <Link
                     href="/login"
-                    className="flex items-center space-x-1 text-gray-700 hover:text-blue-600"
+                    className="flex items-center space-x-1 text-gray-100 hover:text-amber-600"
                   >
                     <LogIn />
                     <span>Login</span>
                   </Link>
                   <Link
                     href="/register"
-                    className="flex items-center space-x-1 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
+                    className="flex items-center space-x-1 bg-amber-600 text-white px-4 py-2 rounded-md hover:bg-amber-500 transition-colors"
                   >
                     <UserPlus />
                     <span>Register</span>
                   </Link>
                 </div>
-              )} */}
+              )}
             </div>
             {/* Mobile menu button */}
             <div className="lg:hidden">
@@ -237,7 +242,7 @@ export default function Navbar() {
                     <span>{item.name}</span>
                   </Link>
                 ))}
-                {/* {session?.user?.email && (
+                {token && (
                   <>
                     <Link
                       href={
@@ -261,7 +266,7 @@ export default function Navbar() {
                       <span>Edit Profile</span>
                     </Link>
                   </>
-                )} */}
+                )}
               </div>
               <hr className="border-gray-200 block md:hidden" />
               <div className="space-y-3 pt-2 md:pt-0">
@@ -281,7 +286,7 @@ export default function Navbar() {
                   <ShoppingCart className="h-5 w-5" />
                   {/* <span>Cart ({cartData.totalQuantity})</span> */}
                 </Link>
-                {/* {!session?.user?.email && (
+                {!token && (
                   <>
                     <Link
                       href="/login"
@@ -301,15 +306,15 @@ export default function Navbar() {
                     </Link>
                   </>
                 )}
-                {session?.user?.email && (
+                {token && (
                   <button
-                    onClick={() => signOut()}
+                    onClick={() => dispatch(logout())}
                     className="flex items-center space-x-2 text-gray-600 px-4 py-2"
                   >
                     <LogOut className="h-5 w-5" />
                     <span>Sign out</span>
                   </button>
-                )} */}
+                )}
               </div>
             </div>
           </div>
