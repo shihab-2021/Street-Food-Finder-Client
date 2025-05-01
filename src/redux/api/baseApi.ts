@@ -7,20 +7,19 @@ import {
   fetchBaseQuery,
   createApi,
 } from "@reduxjs/toolkit/query/react";
+import { RootState } from "../store";
+import { logout, setUser } from "../features/auth/authSlice";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: process.env.NEXT_PUBLIC_BASE_API,
   credentials: "include",
-  prepareHeaders: async (headers) => {
-    // try {
-    //   const session = await getSession(); // Get session from NextAuth
+  prepareHeaders: (headers, { getState }) => {
+    const token = (getState() as RootState).auth.token;
 
-    //   if (session?.accessToken) {
-    //     headers.set("authorization", `Bearer ${session.accessToken}`);
-    //   }
-    // } catch (error) {
-    //   console.error("Error fetching session:", error);
-    // }
+    if (token) {
+      headers.set("authorization", `Bearer ${token}`);
+    }
+
     return headers;
   },
 });
@@ -40,34 +39,36 @@ const baseQueryWithRefreshToken: BaseQueryFn<
         break;
       case 401:
         try {
-          const res = await fetch(
-            `${process.env.NEXT_PUBLIC_BASE_API}/auth/refresh-token`,
-            {
-              method: "POST",
-              credentials: "include",
+          if ((api.getState() as RootState)?.auth?.token !== null) {
+            const res = await fetch(
+              `${process.env.NEXT_PUBLIC_BASE_API}/auth/refresh-token`,
+              {
+                method: "POST",
+                credentials: "include",
+              }
+            );
+
+            const data = await res.json();
+
+            if (data?.data?.accessToken) {
+              const user = (api.getState() as RootState).auth.user;
+
+              api.dispatch(
+                setUser({
+                  user,
+                  token: data.data.accessToken,
+                })
+              );
+
+              result = await baseQuery(args, api, extraOptions);
+            } else {
+              // api.dispatch(logout());
             }
-          );
-
-          const data = await res.json();
-
-          if (data?.data?.accessToken) {
-            // Dispatch token update
-            // api.dispatch(
-            //   setUser({
-            //     user: (await getSession())?.user,
-            //     token: data.data.accessToken,
-            //   })
-            // );
-
-            // Retry the original request
-            result = await baseQuery(args, api, extraOptions);
-          } else {
-            // Logout if refresh fails
-            // api.dispatch(signOut());
           }
         } catch (error) {
           console.error("Token refresh error:", error);
-          //   api.dispatch(signOut());
+
+          api.dispatch(logout());
         }
         break;
     }

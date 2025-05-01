@@ -12,7 +12,7 @@ const authApi = baseApi.injectEndpoints({
     }),
     signup: builder.mutation({
       query: (userInfo) => ({
-        url: "/auth/register",
+        url: "/user/create-user",
         method: "POST",
         body: userInfo,
       }),
@@ -20,7 +20,7 @@ const authApi = baseApi.injectEndpoints({
     }),
     profile: builder.query({
       query: () => ({
-        url: "/auth/profile",
+        url: "/user/me",
         method: "GET",
       }),
       providesTags: ["profile", "bookings"],
