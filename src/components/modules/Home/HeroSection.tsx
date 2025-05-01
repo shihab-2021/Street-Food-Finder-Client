@@ -18,7 +18,7 @@ import Link from "next/link";
 
 export default async function HeroSection() {
   return (
-    <div id="carousel">
+    <div id="carousel" className="font-arima">
       <HeroHelper>
         <CarouselContent className="max-h-[100vh]">
           {[
@@ -67,7 +67,7 @@ export default async function HeroSection() {
                   {/* Premium button styling */}
                   <Link
                     href={"/"}
-                    className="px-8 py-3 bg-amber-500 hover:bg-amber-400 text-white font-medium  transform transition-all duration-300 hover:scale-105 hover:shadow-lg font-sansita"
+                    className="px-8 py-3 bg-amber-500 hover:bg-amber-400 text-white font-medium transform transition-all duration-300 hover:scale-105 hover:shadow-lg font-sansita"
                   >
                     Join Our Food Squad
                   </Link>

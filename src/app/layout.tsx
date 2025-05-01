@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Sansita, Lobster, Arima, Oleo_Script } from "next/font/google";
+import Providers from "@/providers/Providers";
 
 const sansita = Sansita({
   variable: "--font-sansita", // Link this to a CSS variable
@@ -40,7 +41,7 @@ export default function RootLayout({
       <body
         className={`${sansita.variable} ${arima.variable} ${oleo_script.variable} ${lobster.variable} antialiased`}
       >
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
