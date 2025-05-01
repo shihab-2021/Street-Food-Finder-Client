@@ -1,6 +1,4 @@
 "use client";
-import Image from "next/image";
-import Logo from "@/assets/LogoPro.png";
 import {
   Form,
   FormControl,
@@ -13,35 +11,45 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { useLoginMutation } from "@/redux/features/auth/authApi";
+import { useAppDispatch } from "@/redux/hooks";
+import { verifyToken } from "@/utils/verifyToken";
+import { setUser } from "@/redux/features/auth/authSlice";
+import { toast } from "sonner";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const LoginPage = () => {
   const form = useForm();
+  const [login] = useLoginMutation();
+  const dispatch = useAppDispatch();
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get("redirectPath");
+  const router = useRouter();
 
   const {
     formState: { isSubmitting },
   } = form;
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    // try {
-    //   const res = await signIn("credentials", {
-    //     redirect: false,
-    //     email: data.email,
-    //     password: data.password,
-    //   });
-    //   // setIsLoading(true);
-    //   if (res?.ok) {
-    //     toast.success("Successfully Logged In!");
-    //     if (redirect) {
-    //       router.push(redirect);
-    //     } else {
-    //       router.push("/");
-    //     }
-    //   } else {
-    //     toast.error(res?.error);
-    //   }
-    // } catch (err: any) {
-    //   console.error(err);
-    // }
+    try {
+      const res = await login(data).unwrap();
+      const user = verifyToken(res.data.accessToken);
+      dispatch(setUser({ user: user, token: res.data.accessToken }));
+      // setIsLoading(true);
+      console.log(res);
+      if (res?.success) {
+        toast.success("Successfully Logged In!");
+        if (redirect) {
+          router.push(redirect);
+        } else {
+          router.push("/");
+        }
+      } else {
+        toast.error(res?.error);
+      }
+    } catch (err: any) {
+      console.error(err);
+    }
   };
   return (
     <>
@@ -105,7 +113,7 @@ const LoginPage = () => {
                 )}
               />
 
-              <Button type="submit" className="mt-5 w-full">
+              <Button type="submit" className="mt-5 w-full cursor-pointer">
                 {isSubmitting ? "Logging...." : "Login"}
               </Button>
             </form>

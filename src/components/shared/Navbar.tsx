@@ -45,26 +45,6 @@ interface NavItem {
 }
 
 export default function Navbar() {
-  //   const { data: session } = useSession();
-  //   const { data: profile } = useProfileQuery(session?.accessToken, {
-  //     skip: !session?.accessToken,
-  //   });
-  //   const cartData = useAppSelector((state) => state.cart);
-  //   const [showToast, setShowToast] = useState(true);
-  //   useEffect(() => {
-  //     (async function () {
-  //       if (session?.statusCode === 404) {
-  //         if (showToast) {
-  //           toast.error("Account doesn't exists!");
-  //           setShowToast(false);
-  //         }
-  //         setTimeout(() => {
-  //           signOut();
-  //         }, 5000);
-  //       }
-  //     })();
-  //   }, [session]);
-
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const token = useAppSelector(useCurrentToken);
@@ -116,42 +96,34 @@ export default function Navbar() {
                   <Link
                     key={item.name}
                     href={item.path}
-                    className="flex items-center space-x-1 text-gray-600 hover:text-blue-600 transition-colors duration-200"
+                    className="flex items-center space-x-1 text-gray-100 hover:text-amber-600 transition-colors duration-200"
                   >
                     {/* <item.icon className="text-sm" /> */}
                     <span>{item.name}</span>
                   </Link>
                 ))}
               </div>
-              <button className="text-gray-600 hover:text-blue-600 transition-colors duration-200 relative">
+              <button className="text-gray-100 hover:text-amber-600 transition-colors duration-200 relative">
                 <SearchIcon className="h-5 w-5" />
               </button>
-              {token && (
-                <Link className="relative" href={"/dashboard/customer"}>
-                  <ShoppingCart />
-                  <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
-                    {/* {cartData.totalQuantity} */}0
-                  </span>
-                </Link>
-              )}
               {token ? (
                 <div className="relative">
                   <button
-                    onClick={toggleProfile}
-                    className="flex items-center space-x-2 focus:outline-none"
+                    onClick={() => toggleProfile()}
+                    className="flex items-center space-x-2 focus:outline-none cursor-pointer"
                   >
-                    {profile?.data?.avatar ? (
+                    {profile?.data?.profilePhoto ? (
                       <Image
-                        src={profile?.data?.avatar}
+                        src={profile?.data?.profilePhoto}
                         alt={profile?.data?.name}
                         className="h-10 w-10 rounded-full object-cover border"
                         width={50}
                         height={50}
                       />
                     ) : (
-                      <UserCircle2Icon className="h-10 w-10 text-gray-600" />
+                      <UserCircle2Icon className="h-10 w-10 text-gray-100" />
                     )}
-                    <span className="text-gray-700">{profile?.data?.name}</span>
+                    <span className="text-gray-50">{profile?.data?.name}</span>
                   </button>
 
                   {isProfileOpen && (
