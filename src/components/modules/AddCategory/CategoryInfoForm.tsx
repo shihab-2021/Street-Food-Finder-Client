@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -20,15 +21,11 @@ export default function CategoryInfoForm() {
     setFile(selectedFile);
   };
 
-
   useEffect(() => {
     if (file) {
       const objectUrl = URL.createObjectURL(file);
       setPreviewUrl(objectUrl);
-
-      return () => {
-        URL.revokeObjectURL(objectUrl);
-      };
+      return () => URL.revokeObjectURL(objectUrl);
     } else {
       setPreviewUrl(null);
     }
@@ -45,26 +42,38 @@ export default function CategoryInfoForm() {
     setIsSubmitting(true);
     setShowModal(true);
 
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("data", JSON.stringify({ name }));
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("data", JSON.stringify({ name }));
 
-    const result = await createCategory(formData);
+      for (const [key, value] of formData.entries()) {
+        console.log(`${key}:`, value);
+      }
 
-    setIsSubmitting(false);
-    setShowModal(false);
+      const result = await createCategory(formData);
+      console.log("createCategory result:", result);
 
-    if (result.success) {
-      setMessage("Category created successfully!");
-      setName("");
-      setFile(null);
-    } else {
-      setMessage(result.error || "Something went wrong");
+      setIsSubmitting(false);
+      setShowModal(false);
+
+      if (result.success) {
+        setMessage("Category created successfully!");
+        setName("");
+        setFile(null);
+      } else {
+        setMessage(result.error || "Something went wrong");
+      }
+    } catch (error) {
+      console.error("Error in handleSubmit:", error);
+      setIsSubmitting(false);
+      setShowModal(false);
+      setMessage("An unexpected error occurred");
     }
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 rounded-2xl shadow-xl bg-[#232536] text-white">
+    <div className="max-w-md mx-auto p-6 rounded-2xl shadow-xl bg-[#232536] text-white mt-40">
       <h2 className="text-3xl font-bold mb-6 text-center text-[#FFB900]">
         Add Category
       </h2>

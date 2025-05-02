@@ -116,7 +116,8 @@ export default function Navbar() {
                     {profile?.data?.profilePhoto ? (
                       <Image
                         src={profile?.data?.profilePhoto}
-                        alt={profile?.data?.name}
+                        // profile?.data?.name
+                        alt='image'
                         className="h-10 w-10 rounded-full object-cover border"
                         width={50}
                         height={50}
