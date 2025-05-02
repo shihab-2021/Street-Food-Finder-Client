@@ -5,7 +5,6 @@ import { cookies } from "next/headers";
 export const createPost = async (formData: FormData): Promise<any> => {
   const cookieStore = await cookies();
   const token = cookieStore.get("accessToken")?.value;
-  console.log("accessToken:", token);
 
   if (!token) {
     console.error("Authentication token is missing");
@@ -26,7 +25,6 @@ export const createPost = async (formData: FormData): Promise<any> => {
     );
 
     const result = await res.json();
-    console.log("Server response:", result);
 
     if (!res.ok) {
       return {
@@ -219,3 +217,5 @@ export const deletePosts = async (
   }
   return { success: true, data };
 };
+
+// git push origin street-food-client

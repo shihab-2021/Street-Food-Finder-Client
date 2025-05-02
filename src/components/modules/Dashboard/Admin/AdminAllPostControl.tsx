@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import Image from "next/image";
 import { useState } from "react";
@@ -53,7 +54,7 @@ const AdminAllPostControl: React.FC<ManagePostsProps> = ({ posts }) => {
     <div className="p-4 sm:p-6 max-w-6xl mx-auto">
       <h1 className="text-2xl sm:text-3xl font-bold mb-6">Manage All Posts</h1>
 
-      {allPosts.length === 0 ? (
+      {allPosts?.length === 0 ? (
         <p className="text-gray-600">No posts available.</p>
       ) : (
         <div className="grid gap-6">
