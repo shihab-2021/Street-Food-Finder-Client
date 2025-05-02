@@ -40,6 +40,38 @@ export const createPost = async (formData: FormData): Promise<any> => {
   }
 };
 
+// Update Posts
+export const updatePost = async (postId: string, formData: FormData) => {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("accessToken")?.value;
+  if (!token) {
+    console.error("Authentication token is missing");
+    return { success: false, error: "Authentication token is missing" };
+  }
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_API}/post/update-post/${postId}`,
+    {
+      method: "PATCH",
+      body: formData,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        // "Content-Type": "multipart/form-data",
+      },
+      credentials: "include",
+    }
+  );
+  const result = await res.json();
+
+  if (!res.ok) {
+    return {
+      success: false,
+      error: result.error || "Failed to create category",
+    };
+  }
+
+  return result;
+};
+
 // Get All Posts
 export const getAllpost = async () => {
   const cookieStore = await cookies();
@@ -121,7 +153,6 @@ export const getRejectedpost = async () => {
   }
 };
 
-
 // Get Premium Post
 export const getPremiumpost = async () => {
   const cookieStore = await cookies();
@@ -196,9 +227,7 @@ export const makeStatusPremium = async (
 };
 
 // Deleting Posts
-export const deletePosts = async (
-  postId: string,
-) => {
+export const deletePosts = async (postId: string) => {
   const cookieStore = await cookies();
   const token = cookieStore.get("accessToken")?.value;
   const res = await fetch(
