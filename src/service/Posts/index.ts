@@ -2,9 +2,11 @@
 "use server";
 import { cookies } from "next/headers";
 
-export const createCategory = async (formData: FormData): Promise<any> => {
+
+export const createPost = async (formData: FormData): Promise<any> => {
     const cookieStore = await cookies();
     const token = cookieStore.get("accessToken")?.value; 
+    console.log("accessToken:", token);
   
     if (!token) {
       console.error("Authentication token is missing");
@@ -13,7 +15,7 @@ export const createCategory = async (formData: FormData): Promise<any> => {
   
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_API}/category/create-category`,
+        `${process.env.NEXT_PUBLIC_BASE_API}/post/create-post`,
         {
           method: "POST",
           body: formData,
@@ -36,14 +38,14 @@ export const createCategory = async (formData: FormData): Promise<any> => {
   
       return result;
     } catch (error) {
-      console.error("Error in createCategory:", error);
+      console.error("Error in create post:", error);
       return { success: false, error: "An unexpected error occurred" };
     }
   };
 
-export const getAlLCategory = async () => {
+export const getAllpost = async () => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/category`);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/post`);
     const data = await res.json();
     return data;
   } catch (error: any) {
