@@ -66,6 +66,16 @@ export const adminRoutes = [
     icon: FileCheck,
   },
   {
+    path: "/dashboard/admin/manageApprovedPosts",
+    name: "Manage Approved Posts",
+    icon: FileCheck,
+  },
+  {
+    path: "/dashboard/admin/manageRejectedPost",
+    name: "Manage Rejected Posts",
+    icon: FileCheck,
+  },
+  {
     path: "/dashboard/admin/manageAllPosts",
     name: "Manage All Posts",
     icon: ColumnsSettingsIcon,

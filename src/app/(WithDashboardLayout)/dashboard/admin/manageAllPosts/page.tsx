@@ -1,28 +1,14 @@
 import AdminAllPostControl from "@/components/modules/Dashboard/Admin/AdminAllPostControl";
+import { getAllpost } from "@/service/Posts";
 import React from "react";
 
-export default function ManageAllPosts() {
+export default async function ManageAllPosts() {
+    const data = await getAllpost();
+    console.log(data);
   return (
     <div>
       <AdminAllPostControl
-        posts={[
-          {
-            id: "123-asdf-asdfasd-asdfasd",
-            title: "Best Chaat Place",
-            location: "Mumbai",
-            priceRange: "$100 - $200",
-            // description: "Some description",
-            isPremium: false,
-          },
-          {
-            id: "124-sadfasdf-asdf-sdfsdf-sdf",
-            title: "Best Chaat Place",
-            location: "Mumbai",
-            priceRange: "$100 - $200",
-            // description: "Some description",
-            isPremium: false,
-          },
-        ]}
+       posts={data.data}
       />
     </div>
   );

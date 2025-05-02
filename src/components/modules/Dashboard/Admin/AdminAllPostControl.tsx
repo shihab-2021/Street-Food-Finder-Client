@@ -9,6 +9,7 @@ interface Post {
   priceRange: string;
   isPremium: boolean;
   image?: string;
+  status: "PENDING" | "APPROVED" | "REJECTED";
 }
 
 interface ManagePostsProps {
@@ -17,6 +18,7 @@ interface ManagePostsProps {
 
 const AdminAllPostControl: React.FC<ManagePostsProps> = ({ posts }) => {
   const [allPosts, setAllPosts] = useState<Post[]>(posts);
+  console.log(posts);
 
   const handleTogglePremium = async (postId: string, isPremium: boolean) => {};
 
@@ -63,7 +65,9 @@ const AdminAllPostControl: React.FC<ManagePostsProps> = ({ posts }) => {
                     />
                     Mark as Premium
                   </label>
-
+                  <button disabled className="bg-green-600 text-white text-sm px-3 py-1 rounded ">
+                    {post.status}
+                  </button>
                   <button
                     onClick={() => handleDelete(post.id)}
                     className="bg-red-600 text-white text-sm px-3 py-1 rounded hover:bg-red-700"
