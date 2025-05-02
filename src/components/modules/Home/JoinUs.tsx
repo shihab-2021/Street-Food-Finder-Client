@@ -1,5 +1,7 @@
 // const uri = "../../../assets/joinUs.png";
 
+import Link from "next/link";
+
 // export default function JoinUs() {
 //   return (
 //     <div
@@ -49,12 +51,12 @@ export default function JoinUs() {
               shall feature your treasured food trails.
             </p>
             <div>
-              <a
+              <Link
                 href="/addtaste"
                 className="px-8 py-3 bg-amber-500 hover:bg-amber-400 text-white font-medium transform transition-all duration-300 hover:scale-105 hover:shadow-lg font-sansita"
               >
                 Suggest A Taste
-              </a>
+              </Link>
             </div>
           </div>
         </div>
