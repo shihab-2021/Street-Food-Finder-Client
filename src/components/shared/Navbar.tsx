@@ -23,6 +23,7 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { logout, useCurrentToken } from "@/redux/features/auth/authSlice";
 import { useProfileQuery } from "@/redux/features/auth/authApi";
+import { Button } from "../ui/button";
 // import { useAppSelector } from "@/redux/hooks";
 
 // declare module "next-auth" {
@@ -103,12 +104,12 @@ export default function Navbar() {
                   </Link>
                 ))}
               </div>
-              <button className="text-gray-100 hover:text-amber-600 transition-colors duration-200 relative">
+              <Button className="text-gray-100 hover:text-amber-600 transition-colors duration-200 relative">
                 <SearchIcon className="h-5 w-5" />
-              </button>
+              </Button>
               {token ? (
                 <div className="relative">
-                  <button
+                  <Button
                     onClick={() => toggleProfile()}
                     className="flex items-center space-x-2 focus:outline-none cursor-pointer"
                   >
@@ -124,7 +125,7 @@ export default function Navbar() {
                       <UserCircle2Icon className="h-10 w-10 text-gray-100" />
                     )}
                     <span className="text-gray-50">{profile?.data?.name}</span>
-                  </button>
+                  </Button>
 
                   {isProfileOpen && (
                     <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
