@@ -47,7 +47,7 @@ export const getAllpost = async () => {
   const cookieStore = await cookies();
   const token = cookieStore.get("accessToken")?.value;
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/post`,{
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/post`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -123,6 +123,28 @@ export const getRejectedpost = async () => {
   }
 };
 
+
+// Get Premium Post
+export const getPremiumpost = async () => {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("accessToken")?.value;
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_API}/post/get-premium-post`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    const data = await res.json();
+    return data;
+  } catch (error: any) {
+    return Error(error.message);
+  }
+};
+
 // Update Post Status
 export const updatePostStatus = async (
   postId: string,
@@ -130,29 +152,70 @@ export const updatePostStatus = async (
 ) => {
   const cookieStore = await cookies();
   const token = cookieStore.get("accessToken")?.value;
-
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_API}/post/update-status/${postId}`,
-      {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ status }),
-      }
-    );
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      throw new Error(data.message || "Failed to update post status");
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_API}/post/update-status/${postId}`,
+    {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ status }),
     }
+  );
 
-    return { success: true, data };
-  } catch (error: any) {
-    console.error("Post status update failed:", error.message);
-    return { success: false, message: error.message };
+  const data = await res.json();
+  if (!res.ok) {
+    throw new Error(data.message || "Failed to update post status");
   }
+  return { success: true, data };
+};
+
+// Making Post Premium
+export const makeStatusPremium = async (
+  postId: string,
+  isPremium: true | false
+) => {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("accessToken")?.value;
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_API}/post/premium/${postId}`,
+    {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ isPremium }),
+    }
+  );
+
+  const data = await res.json();
+  if (!res.ok) {
+    throw new Error(data.message || "Failed to update premium status");
+  }
+  return { success: true, data };
+};
+
+// Deleting Posts
+export const deletePosts = async (
+  postId: string,
+) => {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("accessToken")?.value;
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_API}/post/${postId}`,
+    {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  const data = await res.json();
+  if (!res.ok) {
+    throw new Error(data.message || "Failed to delete premium status");
+  }
+  return { success: true, data };
 };

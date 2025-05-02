@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { makeStatusPremium, updatePostStatus } from "@/service/Posts";
@@ -19,42 +20,11 @@ interface PendingPostsProps {
   posts: Post[];
 }
 
-const AdminApprovedPostControl: React.FC<PendingPostsProps> = ({ posts }) => {
+const AdminPremiumPostControl: React.FC<PendingPostsProps> = ({ posts }) => {
   const [allPosts, setAllPosts] = useState<Post[]>(posts);
   const [loadingId, setLoadingId] = useState<string | null>(null);
 
-  const handleAction = async (
-    id: string,
-    updates: { status?: "REJECTED"; isPremium?: boolean }
-  ) => {
-    try {
-      setLoadingId(id);
-      if (updates.status) {
-        const result = await updatePostStatus(id, updates.status);
-
-        if (result.success) {
-          toast.success(`Post ${updates.status.toLowerCase()} successfully!`);
-
-          setAllPosts((prev) => prev.filter((post) => post.id !== id));
-        } else {
-          toast.error("Failed to update status");
-        }
-      } else if (typeof updates.isPremium === "boolean") {
-        toast.success(
-          `Post marked as ${updates.isPremium ? "Premium" : "Regular"}`
-        );
-        setAllPosts((prev) =>
-          prev.map((post) =>
-            post.id === id ? { ...post, isPremium: updates.isPremium! } : post
-          )
-        );
-      }
-    } catch (error: any) {
-      toast.error(error.message || "Something went wrong");
-    } finally {
-      setLoadingId(null);
-    }
-  };
+  const handleAction = async (id: string) => {};
 
   const handleTogglePremium = async (
     postId: string,
@@ -111,19 +81,17 @@ const AdminApprovedPostControl: React.FC<PendingPostsProps> = ({ posts }) => {
                 <div className="mt-4 flex flex-wrap gap-3 items-center">
                   {/* <button
                     onClick={() =>
-                      handleAction(post.id, { status: "APPROVED" })
-                    }
-                    className="px-4 py-1 rounded bg-green-600 text-white hover:bg-green-700"
-                  >
-                    Approve
-                  </button> */}
-                  <button
-                    onClick={() =>
                       handleAction(post.id, { status: "REJECTED" })
                     }
                     className="px-4 py-1 rounded bg-red-600 text-white hover:bg-red-700"
                   >
                     Reject
+                  </button> */}
+                  <button
+                    onClick={() => handleAction(post.id)}
+                    className="px-4 py-1 rounded bg-red-600 text-white hover:bg-red-700"
+                  >
+                    Delete
                   </button>
 
                   <label className="inline-flex items-center gap-2">
@@ -148,4 +116,4 @@ const AdminApprovedPostControl: React.FC<PendingPostsProps> = ({ posts }) => {
   );
 };
 
-export default AdminApprovedPostControl;
+export default AdminPremiumPostControl;

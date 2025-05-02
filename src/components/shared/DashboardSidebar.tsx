@@ -76,6 +76,11 @@ export const adminRoutes = [
     icon: FileCheck,
   },
   {
+    path: "/dashboard/admin/managePremiumPosts",
+    name: "Manage Premium Posts",
+    icon: FileCheck,
+  },
+  {
     path: "/dashboard/admin/manageAllPosts",
     name: "Manage All Posts",
     icon: ColumnsSettingsIcon,
