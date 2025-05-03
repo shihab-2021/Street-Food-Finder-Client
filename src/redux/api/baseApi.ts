@@ -90,6 +90,7 @@ export const baseApi = createApi({
     "bookings",
     "provider-orders",
     "pending-orders",
+    "comments",
   ],
   endpoints: () => ({}),
   keepUnusedDataFor: 30, // Keep unused data for 30 seconds
