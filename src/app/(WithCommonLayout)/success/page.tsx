@@ -40,7 +40,7 @@ const PaymentSuccess = ({ searchParams }: any) => {
 
     validate();
   });
-
+// Payment
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-[#232536] text-white p-6">
       <div className="text-6xl mb-4 text-[#FFB900]">✅</div>
