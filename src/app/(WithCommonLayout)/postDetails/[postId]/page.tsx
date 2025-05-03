@@ -109,8 +109,8 @@ export default function PostDetails({
   const averageRating =
     ratings?.length > 0 ? (total / ratings?.length)?.toFixed(1) : 0.0;
 
-  console.log(comment);
-  console.log(post);
+  console.log(comments);
+  //   console.log(post);
   return (
     <div>
       {post && (
@@ -223,37 +223,45 @@ export default function PostDetails({
               </button>
             </div>
             <div>
-              {Array.from({ length: 5 })?.map((comment: any, index) => (
-                <div key={index}>
-                  <div className="my-4 flex flex-col sm:flex-row">
-                    <div>
-                      <Image
-                        width={200}
-                        height={200}
-                        alt="commenter image"
-                        src={
-                          comment?.image ||
-                          "https://i.ibb.co/DMYmT3x/Generic-Profile.jpg"
-                        }
-                        className="rounded-full w-10 h-10 object-cover dark:border-white border border-black"
-                      />
-                    </div>
-                    <div className="pl-4">
-                      <h1 className="text-2xl font-bold">
-                        {comment?.name || "Mike Alan"}
-                      </h1>
-                      <small className="font-sans">
-                        {comment?.time || "03:07 PM"} ~{" "}
-                        {comment?.date || "5/4/2025"}
-                      </small>
-                      <p className="py-4">
-                        {comment?.comment || "Very Nice try it"}
-                      </p>
-                      <hr />
+              {comments?.data?.map((comment: any, index: number) => {
+                const formattedTime = new Date(
+                  comment?.createdAt
+                ).toLocaleTimeString();
+                const formattedDate = new Date(
+                  comment?.createdAt
+                ).toLocaleDateString();
+                return (
+                  <div key={index}>
+                    <div className="my-4 flex flex-col sm:flex-row">
+                      <div>
+                        <Image
+                          width={200}
+                          height={200}
+                          alt="commenter image"
+                          src={
+                            comment?.user?.profilePhoto ||
+                            "https://i.ibb.co/DMYmT3x/Generic-Profile.jpg"
+                          }
+                          className="rounded-full w-10 h-10 object-cover dark:border-white border border-black"
+                        />
+                      </div>
+                      <div className="pl-4">
+                        <h1 className="text-2xl font-bold">
+                          {comment?.user?.name || "Mike Alan"}
+                        </h1>
+                        <small className="font-sans">
+                          {formattedTime || "03:07 PM"} ~{" "}
+                          {formattedDate || "5/4/2025"}
+                        </small>
+                        <p className="py-4">
+                          {comment?.content || "Very Nice try it"}
+                        </p>
+                        <hr />
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>

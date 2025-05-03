@@ -4,7 +4,6 @@ import React from "react";
 
 export default async function ManageApprovedPosts() {
   const data = await getApprovedpost();
-  console.log(data.data);
   return (
     <div>
       <AdminApprovedPostControl posts={data.data} />

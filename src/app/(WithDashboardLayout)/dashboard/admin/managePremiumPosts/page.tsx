@@ -3,7 +3,6 @@ import { getPremiumpost } from "@/service/Posts";
 
 export default async function ManagePremiumPosts() {
   const data = await getPremiumpost();
-  console.log(data.data);
   return (
     <div>
       <AdminPremiumPostControl posts={data.data} />
