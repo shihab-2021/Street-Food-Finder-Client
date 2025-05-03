@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import {
   ChevronUp,
@@ -42,6 +43,7 @@ import Logo from "@/assets/LogoPro.png";
 import Image from "next/image";
 import { useAppSelector } from "@/redux/hooks";
 import { logout, useCurrentToken } from "@/redux/features/auth/authSlice";
+import { Button } from "../ui/button";
 
 type TRoute = {
   path: string;
@@ -66,6 +68,21 @@ export const adminRoutes = [
     icon: FileCheck,
   },
   {
+    path: "/dashboard/admin/manageApprovedPosts",
+    name: "Manage Approved Posts",
+    icon: FileCheck,
+  },
+  {
+    path: "/dashboard/admin/manageRejectedPost",
+    name: "Manage Rejected Posts",
+    icon: FileCheck,
+  },
+  {
+    path: "/dashboard/admin/managePremiumPosts",
+    name: "Manage Premium Posts",
+    icon: FileCheck,
+  },
+  {
     path: "/dashboard/admin/manageAllPosts",
     name: "Manage All Posts",
     icon: ColumnsSettingsIcon,
@@ -81,6 +98,11 @@ export const visitorRoutes = [
     path: "/dashboard/customer/myCart",
     name: "My Cart",
     icon: ShoppingCart,
+  },
+  {
+    path: "/dashboard/customer/profile",
+    name: "My Profile",
+    icon: Home,
   },
   {
     path: "/dashboard/customer/myOrders",
@@ -130,12 +152,12 @@ export function DashboardSidebar() {
             <Link href={"/"}>
               <Image src={Logo} alt="logo" className="w-28" />
             </Link>
-            <button
+            <Button
               onClick={toggleSidebar}
               className="p-2 hover:bg-zinc-100 rounded-lg"
             >
               <SidebarCloseIcon className="" />
-            </button>
+            </Button>
           </div>
         </SidebarHeader>
         <SidebarContent className="bg-white">

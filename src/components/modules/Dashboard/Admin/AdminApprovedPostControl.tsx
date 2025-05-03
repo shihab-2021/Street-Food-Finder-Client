@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { updatePostStatus } from "@/service/Posts";
+import { makeStatusPremium, updatePostStatus } from "@/service/Posts";
 import Image from "next/image";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -18,13 +19,13 @@ interface PendingPostsProps {
   posts: Post[];
 }
 
-const AdminPendingPostControl: React.FC<PendingPostsProps> = ({ posts }) => {
+const AdminApprovedPostControl: React.FC<PendingPostsProps> = ({ posts }) => {
   const [allPosts, setAllPosts] = useState<Post[]>(posts);
   const [loadingId, setLoadingId] = useState<string | null>(null);
 
   const handleAction = async (
     id: string,
-    updates: { status?: "APPROVED" | "REJECTED"; isPremium?: boolean }
+    updates: { status?: "REJECTED"; isPremium?: boolean }
   ) => {
     try {
       setLoadingId(id);
@@ -55,33 +56,33 @@ const AdminPendingPostControl: React.FC<PendingPostsProps> = ({ posts }) => {
     }
   };
 
-  // const handleTogglePremium = async (
-  //   postId: string,
-  //   currentStatus: boolean
-  // ) => {
-  //   try {
-  //     setLoadingId(postId);
-  //     await makeStatusPremium(postId, !currentStatus);
-  //     setAllPosts((prevPosts) =>
-  //       prevPosts.map((post) =>
-  //         post.id === postId ? { ...post, isPremium: !currentStatus } : post
-  //       )
-  //     );
-  //   } catch (error) {
-  //     console.error("Failed to update premium status", error);
-  //   } finally {
-  //     setLoadingId(null);
-  //   }
-  // };
+  const handleTogglePremium = async (
+    postId: string,
+    currentStatus: boolean
+  ) => {
+    try {
+      setLoadingId(postId);
+      await makeStatusPremium(postId, !currentStatus);
+      setAllPosts((prevPosts) =>
+        prevPosts.map((post) =>
+          post.id === postId ? { ...post, isPremium: !currentStatus } : post
+        )
+      );
+    } catch (error) {
+      console.error("Failed to update premium status", error);
+    } finally {
+      setLoadingId(null);
+    }
+  };
 
   return (
-    <div>
+    <div className="">
       <h1 className="text-2xl sm:text-3xl font-bold mb-6">
-        Review Pending Posts
+        Review Approved Posts
       </h1>
 
       {allPosts.length === 0 ? (
-        <p className="text-gray-600">No pending posts.</p>
+        <p className="text-gray-600">No Approved Posts.</p>
       ) : (
         <div className="grid gap-6">
           {allPosts.map((post) => (
@@ -108,45 +109,30 @@ const AdminPendingPostControl: React.FC<PendingPostsProps> = ({ posts }) => {
                 </p>
 
                 <div className="mt-4 flex flex-wrap gap-3 items-center">
-                  <button
+                  {/* <button
                     onClick={() =>
                       handleAction(post.id, { status: "APPROVED" })
                     }
-                    className="px-4 py-1 rounded bg-green-600 text-white hover:bg-green-700 disabled:opacity-50"
-                    disabled={loadingId === post.id}
+                    className="px-4 py-1 rounded bg-green-600 text-white hover:bg-green-700"
                   >
-                    {loadingId === post.id ? "Approving..." : "Approve"}
-                  </button>
+                    Approve
+                  </button> */}
                   <button
                     onClick={() =>
                       handleAction(post.id, { status: "REJECTED" })
                     }
-                    className="px-4 py-1 rounded bg-red-600 text-white hover:bg-red-700 disabled:opacity-50"
-                    disabled={loadingId === post.id}
+                    className="px-4 py-1 rounded bg-red-600 text-white hover:bg-red-700"
                   >
-                    {loadingId === post.id ? "Rejecting..." : "Reject"}
+                    Reject
                   </button>
-                  {/* <label className="inline-flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      checked={post.isPremium}
-                      onChange={() =>
-                        handleAction(post.id, {
-                          isPremium: !post.isPremium,
-                        })
-                      }
-                      className="accent-orange-500"
-                      disabled={loadingId === post.id}
-                    />
-                    <span className="text-sm">Mark as Premium</span>
-                  </label> */}
+
                   <label className="inline-flex items-center gap-2">
                     <input
                       type="checkbox"
                       checked={post.isPremium}
-                      // onChange={() =>
-                      //   handleTogglePremium(post.id, post.isPremium)
-                      // }
+                      onChange={() =>
+                        handleTogglePremium(post.id, post.isPremium)
+                      }
                       className="accent-orange-500"
                       disabled={loadingId === post.id}
                     />
@@ -162,4 +148,4 @@ const AdminPendingPostControl: React.FC<PendingPostsProps> = ({ posts }) => {
   );
 };
 
-export default AdminPendingPostControl;
+export default AdminApprovedPostControl;
