@@ -107,7 +107,7 @@ const AdminRejectedPostControl: React.FC<PendingPostsProps> = ({ posts }) => {
                   >
                     Reject
                   </button> */}
-                  <label className="inline-flex items-center gap-2">
+                  {/* <label className="inline-flex items-center gap-2">
                     <input
                       type="checkbox"
                       checked={post.isPremium}
@@ -117,7 +117,7 @@ const AdminRejectedPostControl: React.FC<PendingPostsProps> = ({ posts }) => {
                       className="accent-orange-500"
                     />
                     <span className="text-sm">Mark as Premium</span>
-                  </label>
+                  </label> */}
                 </div>
               </div>
             </div>
