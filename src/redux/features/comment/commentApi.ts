@@ -9,7 +9,15 @@ const commentApi = baseApi.injectEndpoints({
         body: commentData,
       }),
     }),
+    getSinglePostComment: builder.query({
+      query: (id: string) => ({
+        url: `/comment/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["comments"],
+    }),
   }),
 });
 
-export const { useAddCommentMutation } = commentApi;
+export const { useAddCommentMutation, useGetSinglePostCommentQuery } =
+  commentApi;
