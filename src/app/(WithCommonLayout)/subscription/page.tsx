@@ -1,5 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
+import { selectCurrentUser } from "@/redux/features/auth/authSlice";
+import { initiatePayment } from "@/service/Payment";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { toast } from "sonner";
 
 type Plan = {
   name: string;
@@ -19,17 +25,9 @@ const plans: Plan[] = [
     features: ["View 5 posts/day", "Access basic listings"],
   },
   {
-    name: "Standard",
-    price: "$99/mo",
-    description: "Unlimited access to all regular food posts.",
-    tier: "standard",
-    features: ["Unlimited post views", "Access all categories"],
-    highlight: true,
-  },
-  {
     name: "Premium",
-    price: "$199/mo",
-    description: "Unlock everything including premium posts.",
+    price: "$500/mo",
+    description: "Unlimited access to all regular food posts.",
     tier: "premium",
     features: [
       "All Standard features",
@@ -37,29 +35,66 @@ const plans: Plan[] = [
       "Early event alerts",
       "Support local foodies",
     ],
+    highlight: true,
   },
 ];
 
 export default function SubscriptionPage() {
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const user = useSelector(selectCurrentUser);
+  const router = useRouter();
+
+  // const handleSubscribe = async (plan: Plan) => {
+  //   setSelectedPlan(plan.tier);
+  //   setSubmitting(true);
+
+  //   try {
+  //     const res = await fetch("/api/subscribe", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({ plan: plan.tier }),
+  //     });
+
+  //     if (!res.ok) throw new Error("Subscription failed");
+
+  //     alert(`Subscribed to ${plan.name} plan successfully!`);
+  //   } catch (error) {
+  //     alert("Subscription failed. Try again.");
+  //   } finally {
+  //     setSubmitting(false);
+  //   }
+  // };
 
   const handleSubscribe = async (plan: Plan) => {
+    if (!user) {
+      toast.success("Please login to subscribe.");
+      return;
+    }
     setSelectedPlan(plan.tier);
     setSubmitting(true);
 
     try {
-      const res = await fetch("/api/subscribe", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ plan: plan.tier }),
-      });
+      let amount = 0;
+      let expiresIn = 0;
 
-      if (!res.ok) throw new Error("Subscription failed");
+      if (plan.tier === "premium") {
+        amount = 500;
+        expiresIn = 30;
+      }
 
-      alert(`Subscribed to ${plan.name} plan successfully!`);
+      if (amount === 0) {
+        toast.success("Subscribed to Basic plan successfully!");
+        setSubmitting(false);
+        return;
+      }
+
+      const res = await initiatePayment(amount, expiresIn);
+
+      if (!res.success) throw new Error(res.error);
+      router.push(res.paymentUrl);
     } catch (error) {
-      alert("Subscription failed. Try again.");
+      toast.error("Subscription failed. Try again.");
     } finally {
       setSubmitting(false);
     }

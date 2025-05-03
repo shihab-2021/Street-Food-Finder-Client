@@ -30,7 +30,6 @@ export const initiatePayment = async (
     );
 
     const result = await res.json();
-    console.log("Payment Init Response:", result);
 
     if (!res.ok) {
       return {
@@ -49,32 +48,63 @@ export const initiatePayment = async (
   }
 };
 
-// **/
-// "use client";
-// import { initiatePayment } from "@/server-actions/payment";
+// validate payment
+// export const validatePayment = async (query: any): Promise<any> => {
+//   try {
+//     const searchParams = new URLSearchParams({
+//       trx_id: query.trx_id,
+//     });
 
-// const handleClick = async () => {
-//   const res = await initiatePayment(500, 30);
-//   if (res.success) {
-//     window.location.href = res.paymentUrl;
-//   } else {
-//     alert(res.error);
+//     // const searchParams = new URLSearchParams(query);
+//     console.log(
+//       `${process.env.NEXT_PUBLIC_BASE_API}/payment/ipn?${searchParams}`
+//     );
+//     const res = await fetch(
+//       `${process.env.NEXT_PUBLIC_BASE_API}/payment/ipn?${searchParams}`,
+//       {
+//         method: "POST",
+//       }
+//     );
+
+//     const result = await res.json();
+//     console.log("Validation response:", result);
+
+//     if (!res.ok) {
+//       return {
+//         success: false,
+//         error: result.error || "Payment validation failed",
+//       };
+//     }
+
+//     return {
+//       success: true,
+//       message: result.message,
+//     };
+//   } catch (error: any) {
+//     console.error("Error in validatePayment:", error);
+//     return { success: false, error: "An unexpected error occurred" };
 //   }
 // };
 
-// **/
-
-// validate payment
 export const validatePayment = async (query: any): Promise<any> => {
   try {
-    const searchParams = new URLSearchParams(query).toString();
+    const searchParams = new URLSearchParams({
+      trx_id: query.trx_id,
+    });
+    // const searchParams = new URLSearchParams(query);
+    console.log("searchParams", searchParams);
+    if (!process.env.NEXT_PUBLIC_BASE_API) {
+      throw new Error(
+        "Environment variable NEXT_PUBLIC_BASE_API is not defined"
+      );
+    }
 
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_API}/payment/ipn?${searchParams}`,
-      {
-        method: "POST",
-      }
-    );
+    const apiUrl = `${process.env.NEXT_PUBLIC_BASE_API}/payment/ipn?${searchParams}`;
+    console.log("API URL:", apiUrl);
+
+    const res = await fetch(apiUrl, {
+      method: "POST",
+    });
 
     const result = await res.json();
     console.log("Validation response:", result);
