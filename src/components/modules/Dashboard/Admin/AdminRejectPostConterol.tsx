@@ -63,11 +63,11 @@ const AdminRejectedPostControl: React.FC<PendingPostsProps> = ({ posts }) => {
         Review Rejected Posts
       </h1>
 
-      {allPosts.length === 0 ? (
+      {allPosts?.length === 0 ? (
         <p className="text-gray-600">No Rejected Posts.</p>
       ) : (
         <div className="grid gap-6">
-          {allPosts.map((post) => (
+          {allPosts?.map((post) => (
             <div
               key={post.id}
               className="bg-white border rounded-lg shadow-md p-4 flex flex-col sm:flex-row gap-4"
