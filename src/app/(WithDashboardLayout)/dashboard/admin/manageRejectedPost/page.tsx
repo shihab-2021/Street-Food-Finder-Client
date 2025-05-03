@@ -3,7 +3,6 @@ import { getRejectedpost } from "@/service/Posts";
 
 export default async function ManagePosts() {
   const data = await getRejectedpost();
-  console.log(data.data);
   return (
     <div>
       <AdminRejectedPostControl posts={data.data} />

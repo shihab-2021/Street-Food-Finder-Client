@@ -140,7 +140,7 @@ const AdminPendingPostControl: React.FC<PendingPostsProps> = ({ posts }) => {
                     />
                     <span className="text-sm">Mark as Premium</span>
                   </label> */}
-                  <label className="inline-flex items-center gap-2">
+                  {/* <label className="inline-flex items-center gap-2">
                     <input
                       type="checkbox"
                       checked={post.isPremium}
@@ -151,7 +151,7 @@ const AdminPendingPostControl: React.FC<PendingPostsProps> = ({ posts }) => {
                       disabled={loadingId === post.id}
                     />
                     <span className="text-sm">Mark as Premium</span>
-                  </label>
+                  </label> */}
                 </div>
               </div>
             </div>

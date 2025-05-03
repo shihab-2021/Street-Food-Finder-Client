@@ -103,12 +103,12 @@ export default function NavbarClient() {
                   </Link>
                 ))}
               </div>
-              <Button className="text-gray-100 hover:text-amber-600 transition-colors duration-200 relative">
+              <button className="text-gray-100 hover:text-amber-600 transition-colors duration-200 relative">
                 <SearchIcon className="h-5 w-5" />
-              </Button>
+              </button>
               {token ? (
                 <div className="relative">
-                  <Button
+                  <button
                     onClick={() => toggleProfile()}
                     className="flex items-center space-x-2 focus:outline-none cursor-pointer"
                   >
@@ -125,17 +125,15 @@ export default function NavbarClient() {
                       <UserCircle2Icon className="h-10 w-10 text-gray-100" />
                     )}
                     <span className="text-gray-50">{profile?.data?.name}</span>
-                  </Button>
+                  </button>
 
                   {isProfileOpen && (
                     <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
                       <Link
                         href={
-                          profile?.data?.role === "admin"
+                          profile?.data?.role === "ADMIN"
                             ? "/dashboard/admin"
-                            : profile?.data?.role === "provider"
-                            ? "/dashboard/provider"
-                            : "/dashboard/customer"
+                            : "/dashboard/customer/profile"
                         }
                         className="flex items-center gap-1 w-full px-4 py-2 text-sm text-gray-700 hover:bg-blue-50"
                       >
