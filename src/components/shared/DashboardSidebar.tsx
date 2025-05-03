@@ -43,7 +43,6 @@ import Logo from "@/assets/LogoPro.png";
 import Image from "next/image";
 import { useAppSelector } from "@/redux/hooks";
 import { logout, useCurrentToken } from "@/redux/features/auth/authSlice";
-import { Button } from "../ui/button";
 
 type TRoute = {
   path: string;
@@ -152,12 +151,12 @@ export function DashboardSidebar() {
             <Link href={"/"}>
               <Image src={Logo} alt="logo" className="w-28" />
             </Link>
-            <Button
+            <button
               onClick={toggleSidebar}
               className="p-2 hover:bg-zinc-100 rounded-lg"
             >
               <SidebarCloseIcon className="" />
-            </Button>
+            </button>
           </div>
         </SidebarHeader>
         <SidebarContent className="bg-white">

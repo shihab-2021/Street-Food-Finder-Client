@@ -3,8 +3,7 @@ import { getPendingpost } from "@/service/Posts";
 import React from "react";
 
 export default async function ManagePosts() {
-  const data = await getPendingpost()
-  console.log(data.data);
+  const data = await getPendingpost();
   return (
     <div>
       <AdminPendingPostControl

@@ -51,7 +51,7 @@ const AdminAllPostControl: React.FC<ManagePostsProps> = ({ posts }) => {
   };
 
   return (
-    <div className="p-4 sm:p-6 max-w-6xl mx-auto">
+    <div className="">
       <h1 className="text-2xl sm:text-3xl font-bold mb-6">Manage All Posts</h1>
 
       {allPosts?.length === 0 ? (
@@ -73,30 +73,21 @@ const AdminAllPostControl: React.FC<ManagePostsProps> = ({ posts }) => {
               </div>
 
               <div className="flex-1">
-                <h2 className="text-lg font-semibold">{post.title}</h2>
-                <p className="text-sm text-gray-600 mt-1">{post.location}</p>
-                <p className="text-sm text-gray-500 mb-2">
-                  💰 {post.priceRange}
-                </p>
-
-                <div className="flex items-center gap-4 mt-2 flex-wrap">
-                  <label className="inline-flex items-center gap-2 text-sm">
-                    <input
-                      type="checkbox"
-                      checked={post.isPremium}
-                      onChange={() =>
-                        handleTogglePremium(post.id, post.isPremium)
-                      }
-                      className="accent-orange-500"
-                    />
-                    Mark as Premium
-                  </label>
+                <h2 className="text-lg font-semibold flex justify-between">
+                  <span>{post.title}</span>
                   <button
                     disabled
                     className="bg-green-600 text-white text-sm px-3 py-1 rounded "
                   >
                     {post.status}
                   </button>
+                </h2>
+                <p className="text-sm text-gray-600 mt-1">{post.location}</p>
+                <p className="text-sm text-gray-500 mb-2">
+                  💰 {post.priceRange}
+                </p>
+
+                <div className="flex items-center gap-4 mt-2 flex-wrap">
                   {/* <button
                     onClick={() => handleDelete(post.id)}
                     className="bg-red-600 text-white text-sm px-3 py-1 rounded hover:bg-red-700"
