@@ -86,20 +86,16 @@ export const initiatePayment = async (
 //   }
 // };
 
-export const validatePayment = async (query: any): Promise<any> => {
+export const validatePayment = async (query: any) => {
   try {
-    const searchParams = new URLSearchParams({
-      trx_id: query.trx_id,
-    });
-    // const searchParams = new URLSearchParams(query);
-    console.log("searchParams", searchParams);
+  
     if (!process.env.NEXT_PUBLIC_BASE_API) {
       throw new Error(
         "Environment variable NEXT_PUBLIC_BASE_API is not defined"
       );
     }
 
-    const apiUrl = `${process.env.NEXT_PUBLIC_BASE_API}/payment/ipn?${searchParams}`;
+    const apiUrl = `${process.env.NEXT_PUBLIC_BASE_API}/payment/ipn?${query}`;
     console.log("API URL:", apiUrl);
 
     const res = await fetch(apiUrl, {
