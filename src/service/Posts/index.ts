@@ -123,6 +123,7 @@ export const getApprovedpost = async () => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
+        
       }
     );
     const data = await res.json();
@@ -209,6 +210,32 @@ export const makeStatusPremium = async (
   const token = cookieStore.get("accessToken")?.value;
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_API}/post/premium/${postId}`,
+    {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ isPremium }),
+    }
+  );
+
+  const data = await res.json();
+  if (!res.ok) {
+    throw new Error(data.message || "Failed to update premium status");
+  }
+  return { success: true, data };
+};
+
+// Making Post Regular
+export const makeStatusRegular = async (
+  postId: string,
+  isPremium: true | false
+) => {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("accessToken")?.value;
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_API}/post/regular/${postId}`,
     {
       method: "PATCH",
       headers: {
