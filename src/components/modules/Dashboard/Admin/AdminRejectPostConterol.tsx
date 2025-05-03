@@ -38,7 +38,7 @@ const AdminRejectedPostControl: React.FC<PendingPostsProps> = ({ posts }) => {
 
           setAllPosts((prev) => prev.filter((post) => post.id !== id));
         } else {
-          toast.error(result.message || "Failed to update status");
+          toast.error("Failed to update status");
         }
       } else if (typeof updates.isPremium === "boolean") {
         toast.success(
