@@ -236,6 +236,8 @@ import Image from "next/image";
 import { getAlLCategory } from "@/service/Category";
 import { toast } from "sonner";
 import { createPost } from "@/service/Posts";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "@/redux/features/auth/authSlice";
 
 interface CategoryType {
   id: string;
@@ -255,6 +257,7 @@ export default function TasteForm() {
   const [categories, setCategories] = useState<CategoryType[]>([]);
   const [preview, setPreview] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const user = useSelector(selectCurrentUser);
 
   const form = useForm<ITasteForm>({
     defaultValues: {
@@ -329,6 +332,10 @@ export default function TasteForm() {
   // };
 
   const onSubmit: SubmitHandler<ITasteForm> = async (data) => {
+    if (!user) {
+      toast.success("Please login create posts.");
+      return;
+    }
     setIsSubmitting(true);
     try {
       const formData = new FormData();
