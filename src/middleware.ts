@@ -39,7 +39,6 @@ export const middleware = async (request: NextRequest) => {
 
 export const config = {
   matcher: [
-    "/login",
     "/subscription",
     "/dashboard/admin/addCategory",
     "/dashboard/admin/manageAllPosts",
