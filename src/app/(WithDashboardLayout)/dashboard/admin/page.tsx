@@ -1,5 +1,9 @@
-import React from "react";
+import AdminDashboardChart from "@/components/modules/Dashboard/Admin/AdminDashboardChart";
 
 export default function AdminDashboard() {
-  return <div>AdminDashboard</div>;
+  return (
+    <div>
+      <AdminDashboardChart />
+    </div>
+  );
 }

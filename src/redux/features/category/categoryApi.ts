@@ -8,7 +8,23 @@ const categoryApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+    getDashboardOverview: builder.query({
+      query: () => ({
+        url: "/category/get-dashboard-overview",
+        method: "GET",
+      }),
+    }),
+    getDashboardPaymentOverview: builder.query({
+      query: () => ({
+        url: "/category/get-payment-overview",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useGetAllCategoryQuery } = categoryApi;
+export const {
+  useGetAllCategoryQuery,
+  useGetDashboardOverviewQuery,
+  useGetDashboardPaymentOverviewQuery,
+} = categoryApi;

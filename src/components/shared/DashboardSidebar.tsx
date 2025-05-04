@@ -1,9 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import {
+  BanknoteX,
   ChevronUp,
   ColumnsSettingsIcon,
+  EllipsisIcon,
   FileCheck,
+  Gem,
   Home,
   LayoutDashboardIcon,
   ListOrdered,
@@ -13,9 +16,11 @@ import {
   ScrollText,
   ShoppingCart,
   SidebarCloseIcon,
+  SquareCheck,
   SquarePlus,
   UserCircle2,
   UserCog2,
+  UserPen,
 } from "lucide-react";
 import {
   Sidebar,
@@ -64,22 +69,22 @@ export const adminRoutes = [
   {
     path: "/dashboard/admin/managePendingPosts",
     name: "Manage Pending Posts",
-    icon: FileCheck,
+    icon: EllipsisIcon,
   },
   {
     path: "/dashboard/admin/manageApprovedPosts",
     name: "Manage Approved Posts",
-    icon: FileCheck,
+    icon: SquareCheck,
   },
   {
     path: "/dashboard/admin/manageRejectedPost",
     name: "Manage Rejected Posts",
-    icon: FileCheck,
+    icon: BanknoteX,
   },
   {
     path: "/dashboard/admin/managePremiumPosts",
     name: "Manage Premium Posts",
-    icon: FileCheck,
+    icon: Gem,
   },
   {
     path: "/dashboard/admin/manageAllPosts",
@@ -89,24 +94,9 @@ export const adminRoutes = [
 ];
 export const visitorRoutes = [
   {
-    path: "/dashboard/customer",
-    name: "Dashboard",
-    icon: LayoutDashboardIcon,
-  },
-  {
-    path: "/dashboard/customer/myCart",
-    name: "My Cart",
-    icon: ShoppingCart,
-  },
-  {
     path: "/dashboard/customer/profile",
     name: "My Profile",
-    icon: Home,
-  },
-  {
-    path: "/dashboard/customer/myOrders",
-    name: "My Orders",
-    icon: ListOrdered,
+    icon: UserPen,
   },
 ];
 
@@ -216,16 +206,6 @@ export function DashboardSidebar() {
                     <DropdownMenuItem onClick={() => router.push("/")}>
                       <Home className="h-5 w-5" />
                       <span>Home</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => router.push("/mealList")}>
-                      <Salad className="h-5 w-5" />
-                      <span>All Meals</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      onClick={() => router.push("/dashboard/editProfile")}
-                    >
-                      <UserCog2 className="h-5 w-5" />
-                      <span>Edit Profile</span>
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => logout()}>
                       <LogOutIcon className="h-5 w-5" />

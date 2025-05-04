@@ -50,8 +50,8 @@ export const middleware = async (request: NextRequest) => {
 
 export const config = {
   matcher: [
-    "/subscription",
-    "/addtaste",
+    // "/subscription",
+    // "/addtaste",
     // "/dashboard/admin/addCategory",
     // "/dashboard/admin/manageAllPosts",
     // "/dashboard/admin/manageApprovedPosts",
