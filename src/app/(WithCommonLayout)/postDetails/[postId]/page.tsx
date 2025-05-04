@@ -1,5 +1,6 @@
 "use client";
 
+import { selectCurrentUser } from "@/redux/features/auth/authSlice";
 import {
   useAddCommentMutation,
   useGetSinglePostCommentQuery,
@@ -12,6 +13,7 @@ import {
 import { ThumbsDown, ThumbsUpIcon } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { toast } from "sonner";
 
 export default function PostDetails({
@@ -36,6 +38,7 @@ export default function PostDetails({
   const [addRating] = useAddRatingMutation();
   const [addVote] = useAddVoteMutation();
   const post = data?.data;
+  const user = useSelector(selectCurrentUser);
 
   useEffect(() => {
     (async () => {
@@ -54,6 +57,10 @@ export default function PostDetails({
   }, [post]);
 
   const handleCommentSubmit = async () => {
+    if (!user) {
+      toast.success("Please login to comment.");
+      return;
+    }
     try {
       const commentData = { content: comment, postId: postId };
       const res = await addComment(commentData);
@@ -70,6 +77,10 @@ export default function PostDetails({
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmitRating = async () => {
+    if (!user) {
+      toast.success("Please login to give rating.");
+      return;
+    }
     if (!rating) return alert("Please give a rating.");
 
     setIsSubmitting(true);
@@ -88,6 +99,10 @@ export default function PostDetails({
   };
 
   const handleSubmitVote = async (voteType: string) => {
+    if (!user) {
+      toast.success("Please login to vote.");
+      return;
+    }
     try {
       const voteData = { voteType: voteType, postId: postId };
       const res = await addVote(voteData);
