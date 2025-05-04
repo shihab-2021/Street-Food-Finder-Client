@@ -54,7 +54,7 @@ export default function NavbarClient() {
 
   // Navigation items
   const navItems: NavItem[] = [
-    { name: "Tastes", path: "/tasteList", icon: Salad },
+    { name: "Tastes", path: "/tastes", icon: Salad },
     { name: "Pro Posts", path: "/proPosts", icon: Salad },
     // { name: "About", path: "/about", icon: ShoppingCart },
     // {
@@ -140,13 +140,6 @@ export default function NavbarClient() {
                       >
                         <LayoutDashboardIcon className="h-5 w-5" />
                         <span>Dashboard</span>
-                      </Link>
-                      <Link
-                        href={"/dashboard/editProfile"}
-                        className="flex items-center gap-1 w-full px-4 py-2 text-sm text-gray-700 hover:bg-blue-50"
-                      >
-                        <UserCog2 className="h-5 w-5" />
-                        <span>Edit Profile</span>
                       </Link>
                       <button
                         onClick={() => dispatch(logout())}

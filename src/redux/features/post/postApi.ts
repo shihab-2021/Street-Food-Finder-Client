@@ -4,7 +4,13 @@ const postApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllPost: builder.query({
       query: () => ({
-        url: "/post",
+        url: "/post/get-approved-post",
+        method: "GET",
+      }),
+    }),
+    getProPost: builder.query({
+      query: () => ({
+        url: "/post/get-premium-post",
         method: "GET",
       }),
     }),
@@ -18,4 +24,8 @@ const postApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetAllPostQuery, useGetSingleApprovedPostQuery } = postApi;
+export const {
+  useGetAllPostQuery,
+  useGetProPostQuery,
+  useGetSingleApprovedPostQuery,
+} = postApi;
