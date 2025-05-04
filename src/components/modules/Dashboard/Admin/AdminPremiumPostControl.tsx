@@ -1,7 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { makeStatusPremium, updatePostStatus } from "@/service/Posts";
+import {
+  makeStatusPremium,
+  makeStatusRegular,
+  updatePostStatus,
+} from "@/service/Posts";
 import Image from "next/image";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -26,16 +30,13 @@ const AdminPremiumPostControl: React.FC<PendingPostsProps> = ({ posts }) => {
 
   const handleAction = async (id: string) => {};
 
-  const handleTogglePremium = async (
-    postId: string,
-    currentStatus: boolean
-  ) => {
+  const handleToggleRegular = async (postId: string, status: boolean) => {
     try {
       setLoadingId(postId);
-      await makeStatusPremium(postId, !currentStatus);
+      await makeStatusRegular(postId, status);
       setAllPosts((prevPosts) =>
         prevPosts.map((post) =>
-          post.id === postId ? { ...post, isPremium: !currentStatus } : post
+          post.id === postId ? { ...post, isPremium: !status } : post
         )
       );
     } catch (error) {
@@ -99,7 +100,7 @@ const AdminPremiumPostControl: React.FC<PendingPostsProps> = ({ posts }) => {
                       type="checkbox"
                       checked={post.isPremium}
                       onChange={() =>
-                        handleTogglePremium(post.id, post.isPremium)
+                        handleToggleRegular(post.id, !post.isPremium)
                       }
                       className="accent-orange-500"
                       disabled={loadingId === post.id}

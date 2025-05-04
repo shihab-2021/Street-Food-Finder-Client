@@ -3,6 +3,8 @@
 
 "use client";
 
+import Link from "next/link";
+
 const PaymentSuccess = ({ searchParams }: any) => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-[#232536] text-white p-6">
@@ -11,12 +13,12 @@ const PaymentSuccess = ({ searchParams }: any) => {
       <p className="text-gray-300 mb-6">
         Thank you for your purchase. Your payment was processed successfully.
       </p>
-      <a
-        href="/dashboard"
+      <Link
+        href="/"
         className="px-6 py-2 bg-[#FFB900] text-[#232536] rounded-md font-semibold hover:bg-yellow-400 transition"
       >
-        Go to Dashboard
-      </a>
+        Go to Home Page
+      </Link>
     </div>
   );
 };
