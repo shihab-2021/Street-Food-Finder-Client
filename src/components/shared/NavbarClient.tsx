@@ -54,7 +54,8 @@ export default function NavbarClient() {
 
   // Navigation items
   const navItems: NavItem[] = [
-    { name: "Meals", path: "/mealList", icon: Salad },
+    { name: "Tastes", path: "/tasteList", icon: Salad },
+    { name: "Pro Posts", path: "/proPosts", icon: Salad },
     // { name: "About", path: "/about", icon: ShoppingCart },
     // {
     //   name: "Dashboard",

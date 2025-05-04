@@ -6,14 +6,23 @@ type Role = keyof typeof roleBasedPrivateRoutes;
 const authRoutes = ["/login", "/register"];
 
 const roleBasedPrivateRoutes = {
-  customer: [/^\/customer(\/|$)/, /^\/profile/],
-  admin: [/^\/dashboard(\/|$)/, /^\/profile/],
+  user: ["/customer", "/customer/profile", "/subscription", "/addtaste"],
+  admin: [
+    "/dashboard",
+    "/dashboard/admin/addCategory",
+    "/dashboard/admin/manageAllPosts",
+    "/dashboard/admin/manageApprovedPosts",
+    "/dashboard/admin/managePendingPosts",
+    "/dashboard/admin/managePremiumPosts",
+    "/dashboard/admin/manageRejectedPost",
+  ],
 };
 
 export const middleware = async (request: NextRequest) => {
   const { pathname } = request.nextUrl;
 
   const userInfo = await getCurrentUser();
+
   if (!userInfo) {
     if (authRoutes.includes(pathname)) {
       return NextResponse.next();
@@ -27,8 +36,10 @@ export const middleware = async (request: NextRequest) => {
     }
   }
 
-  if (userInfo?.role && roleBasedPrivateRoutes[userInfo?.role as Role]) {
-    const routes = roleBasedPrivateRoutes[userInfo?.role as Role];
+  const role = (userInfo.role as string).toLowerCase() as Role;
+
+  if (userInfo?.role && roleBasedPrivateRoutes[role]) {
+    const routes = roleBasedPrivateRoutes[role];
     if (routes.some((route) => pathname.match(route))) {
       return NextResponse.next();
     }
@@ -41,12 +52,12 @@ export const config = {
   matcher: [
     "/subscription",
     "/addtaste",
-    "/dashboard/admin/addCategory",
-    "/dashboard/admin/manageAllPosts",
-    "/dashboard/admin/manageApprovedPosts",
-    "/dashboard/admin/managePendingPosts",
-    "/dashboard/admin/managePremiumPosts",
-    "/dashboard/admin/manageRejectedPost",
+    // "/dashboard/admin/addCategory",
+    // "/dashboard/admin/manageAllPosts",
+    // "/dashboard/admin/manageApprovedPosts",
+    // "/dashboard/admin/managePendingPosts",
+    // "/dashboard/admin/managePremiumPosts",
+    // "/dashboard/admin/manageRejectedPost",
     "/customer/profile",
     "/dashboard/:path*",
     "/customer/:path*",

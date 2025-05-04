@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -73,7 +72,7 @@ export default function CategoryInfoForm() {
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 rounded-2xl shadow-xl bg-[#232536] text-white mt-40">
+    <div className="max-w-md mx-auto p-6 rounded-2xl shadow-xl border mt-40">
       <h2 className="text-3xl font-bold mb-6 text-center text-[#FFB900]">
         Add Category
       </h2>
@@ -100,7 +99,7 @@ export default function CategoryInfoForm() {
             type="file"
             accept="image/*"
             onChange={handleImageChange}
-            className="mt-2 bg-white text-black file:bg-[#FFB900] file:text-black"
+            className="mt-2 bg-white text-black file:bg-[#FFB900] file:text-black file:p-1 file:rounded"
           />
         </div>
 
@@ -120,7 +119,7 @@ export default function CategoryInfoForm() {
 
         <Button
           type="submit"
-          className="w-full bg-[#FFB900] text-black hover:bg-[#e6a800]"
+          className="w-full bg-[#FFB900] text-white font-bold cursor-pointer hover:bg-[#e6a800]"
           disabled={isSubmitting}
         >
           {isSubmitting ? "Submitting..." : "Submit"}
