@@ -1,15 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import Image from "next/image";
-import { Badge } from "@/components/ui/badge";
 import {
   Select,
   SelectContent,
@@ -18,32 +10,41 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useState } from "react";
-import {
-  Heart,
-  MessageSquare,
-  Search,
-  Sliders,
-  Star,
-  ThumbsDown,
-  ThumbsUpIcon,
-} from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { MessageSquare, Search, Sliders } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 import { useGetAllPostQuery } from "@/redux/features/post/postApi";
-import { useGetAllCategoryQuery } from "@/redux/features/category/categoryApi";
 import Link from "next/link";
+import { getAlLCategory } from "@/service/Category";
 
 export default function Tastes() {
-  const router = useRouter();
+  const searchParams = useSearchParams();
   const { data: meals, isLoading } = useGetAllPostQuery(undefined, {
     refetchOnFocus: true,
   });
-  const { data: categories } = useGetAllCategoryQuery(undefined, {
-    refetchOnFocus: true,
-  });
+  const [categories, setCategories] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const [dietaryFilters, setDietaryFilters] = useState<string[]>([]);
+
+  const query = searchParams.get("category");
+
+  useEffect(() => {
+    const getCategory = async () => {
+      const categories = await getAlLCategory();
+      setCategories(categories?.data);
+      return categories?.data;
+    };
+    getCategory();
+  }, []);
+
+  useEffect(() => {
+    if (query) {
+      const findCat = categories?.find(
+        (category: any) => category.name === query
+      ) as any;
+      setSelectedCategory(findCat?.id);
+    }
+  }, [query, categories]);
 
   const filteredMeals = meals?.data?.filter((meal: any) => {
     const matchesSearch = meal?.title
@@ -77,7 +78,7 @@ export default function Tastes() {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value={"all"}>All</SelectItem>
-              {categories?.data?.map((category: any) => (
+              {categories?.map((category: any) => (
                 <SelectItem key={category?.id} value={category?.id}>
                   {category?.name}
                 </SelectItem>
@@ -104,7 +105,6 @@ export default function Tastes() {
             onClick={() => {
               setSearchTerm("");
               setSelectedCategory("all");
-              setDietaryFilters([]);
             }}
           >
             Clear Filters

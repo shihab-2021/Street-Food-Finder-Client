@@ -14,7 +14,6 @@ export default function WeeklyFood() {
   const { data: posts, isLoading } = useGetAllPostQuery(undefined, {
     refetchOnFocus: true,
   });
-  console.log(posts);
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 font-arima">
       <h2 className="text-2xl md:text-[37px] tracking-tighter font-semibold">

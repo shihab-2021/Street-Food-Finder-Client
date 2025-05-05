@@ -80,7 +80,7 @@ const baseQueryWithRefreshToken: BaseQueryFn<
 export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: baseQueryWithRefreshToken,
-  tagTypes: ["users", "profile", "comments", "posts", "post"],
+  tagTypes: ["users", "profile", "comments", "posts", "post", "category"],
   endpoints: () => ({}),
   keepUnusedDataFor: 30, // Keep unused data for 30 seconds
   refetchOnMountOrArgChange: true,

@@ -7,6 +7,7 @@ const categoryApi = baseApi.injectEndpoints({
         url: "/category",
         method: "GET",
       }),
+      providesTags: ["category"],
     }),
     getDashboardOverview: builder.query({
       query: () => ({

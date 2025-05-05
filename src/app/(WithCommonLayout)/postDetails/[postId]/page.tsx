@@ -17,9 +17,11 @@ import {
 import { useAppSelector } from "@/redux/hooks";
 import { ThumbsDown, ThumbsUpIcon } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "sonner";
+import Loading from "../../success/loading";
 
 export default function PostDetails({
   params,
@@ -30,6 +32,7 @@ export default function PostDetails({
   const [upVote, setUpVote] = useState(0);
   const [downVote, setDownVote] = useState(0);
   const [postId, setPostId] = useState<string>("");
+  const [loading, setLoading] = useState(true);
   const { data, refetch } = useGetSingleApprovedPostQuery(postId, {
     skip: !postId,
     refetchOnReconnect: true,
@@ -46,6 +49,7 @@ export default function PostDetails({
   const user = useSelector(selectCurrentUser);
   const token = useAppSelector(useCurrentToken);
   const { data: profile } = useProfileQuery(token);
+  const router = useRouter();
 
   useEffect(() => {
     (async () => {
@@ -65,7 +69,14 @@ export default function PostDetails({
       post?.reviews?.find((review: any) => review?.userId === profile?.data?.id)
         ?.rating
     );
-  }, [post, profile]);
+    if (post?.isPremium) {
+      if (profile?.data?.isPremium) {
+        setLoading(false);
+      } else {
+        router.push("/subscription");
+      }
+    }
+  }, [post, profile, router]);
 
   const handleCommentSubmit = async () => {
     if (!user) {
@@ -140,7 +151,7 @@ export default function PostDetails({
 
   return (
     <div>
-      {post && (
+      {post && !loading && (
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 mt-20 font-sansita">
           <div>
             <Image
@@ -293,6 +304,7 @@ export default function PostDetails({
           </div>
         </div>
       )}
+      {loading && <Loading />}
     </div>
   );
 }
