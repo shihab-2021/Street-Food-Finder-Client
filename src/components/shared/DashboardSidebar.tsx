@@ -46,7 +46,7 @@ import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import Logo from "@/assets/LogoPro.png";
 import Image from "next/image";
-import { useAppSelector } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { logout, useCurrentToken } from "@/redux/features/auth/authSlice";
 
 type TRoute = {
@@ -107,6 +107,7 @@ export function DashboardSidebar() {
   const [routes, setRoutes] = useState<TRoute>([]);
   const router = useRouter();
   const pathname = usePathname();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (profile?.data?.email) {
@@ -207,7 +208,12 @@ export function DashboardSidebar() {
                       <Home className="h-5 w-5" />
                       <span>Home</span>
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => logout()}>
+                    <DropdownMenuItem
+                      onClick={() => {
+                        dispatch(logout());
+                        router.push("/");
+                      }}
+                    >
                       <LogOutIcon className="h-5 w-5" />
                       <span>Sign out</span>
                     </DropdownMenuItem>

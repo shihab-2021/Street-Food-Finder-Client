@@ -24,7 +24,7 @@ const authApi = baseApi.injectEndpoints({
         url: "/user/me",
         method: "GET",
       }),
-      providesTags: ["profile", "bookings"],
+      providesTags: ["profile"],
     }),
   }),
 });

@@ -280,7 +280,7 @@ export default function TasteForm() {
     const fetchData = async () => {
       try {
         const res = await getAlLCategory();
-        setCategories(res.data);
+        setCategories(res?.data);
       } catch (error) {
         console.error("Failed to fetch categories:", error);
       }

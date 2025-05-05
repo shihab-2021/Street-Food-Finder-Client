@@ -40,7 +40,6 @@ export default function PopularFood() {
   const token = useAppSelector(useCurrentToken);
   const { data: profile } = useProfileQuery(token);
   const router = useRouter();
-  console.log(profile);
 
   const handleClickCard = () => {
     if (profile?.data?.isPremium) {

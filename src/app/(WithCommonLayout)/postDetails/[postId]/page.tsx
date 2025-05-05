@@ -1,6 +1,10 @@
 "use client";
 
-import { selectCurrentUser } from "@/redux/features/auth/authSlice";
+import { useProfileQuery } from "@/redux/features/auth/authApi";
+import {
+  selectCurrentUser,
+  useCurrentToken,
+} from "@/redux/features/auth/authSlice";
 import {
   useAddCommentMutation,
   useGetSinglePostCommentQuery,
@@ -10,6 +14,7 @@ import {
   useAddRatingMutation,
   useAddVoteMutation,
 } from "@/redux/features/rating/ratingApi";
+import { useAppSelector } from "@/redux/hooks";
 import { ThumbsDown, ThumbsUpIcon } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -39,6 +44,8 @@ export default function PostDetails({
   const [addVote] = useAddVoteMutation();
   const post = data?.data;
   const user = useSelector(selectCurrentUser);
+  const token = useAppSelector(useCurrentToken);
+  const { data: profile } = useProfileQuery(token);
 
   useEffect(() => {
     (async () => {
@@ -54,7 +61,11 @@ export default function PostDetails({
     setDownVote(
       post?.votes?.filter((vote: any) => vote?.voteType === "DOWNVOTE")?.length
     );
-  }, [post]);
+    setRating(
+      post?.reviews?.find((review: any) => review?.userId === profile?.data?.id)
+        ?.rating
+    );
+  }, [post, profile]);
 
   const handleCommentSubmit = async () => {
     if (!user) {
@@ -66,6 +77,7 @@ export default function PostDetails({
       const res = await addComment(commentData);
       if (res?.data?.success) {
         toast.success("Comment successfully added!");
+        commentRefetch();
         setComment("");
       }
     } catch (error) {
@@ -89,6 +101,7 @@ export default function PostDetails({
       const res = await addRating(ratingData);
       if (res?.data?.success) {
         toast.success("Rating successfully added!");
+        refetch();
         setIsSubmitting(false);
       }
     } catch (error) {
@@ -108,8 +121,9 @@ export default function PostDetails({
       const res = await addVote(voteData);
       if (res?.data?.success) {
         toast.success("Vote successfully added!");
-        if (voteType === "UPVOTE") setUpVote(upVote + 1);
-        else setDownVote(downVote + 1);
+        refetch();
+        // if (voteType === "UPVOTE") setUpVote(upVote + 1);
+        // else setDownVote(downVote + 1);
         setIsSubmitting(false);
       }
     } catch (error) {
@@ -124,8 +138,6 @@ export default function PostDetails({
   const averageRating =
     ratings?.length > 0 ? (total / ratings?.length)?.toFixed(1) : 0.0;
 
-  console.log(comments);
-  //   console.log(post);
   return (
     <div>
       {post && (

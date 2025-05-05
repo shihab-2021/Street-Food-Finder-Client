@@ -101,8 +101,8 @@ export default function SubscriptionPage() {
   };
 
   return (
-    <div className="font-arima mt-20 min-h-screen py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto text-center mb-12">
+    <div className="font-arima mt-20 container mx-auto   min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+      <div className=" mx-auto text-center mb-12">
         <h1 className="text-4xl font-bold text-gray-800 mb-2">
           Subscription Plans
         </h1>
@@ -111,7 +111,7 @@ export default function SubscriptionPage() {
         </p>
       </div>
 
-      <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto">
+      <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 mx-auto">
         {plans.map((plan) => (
           <div
             key={plan.tier}
@@ -144,7 +144,7 @@ export default function SubscriptionPage() {
             <button
               onClick={() => handleSubscribe(plan)}
               disabled={submitting && selectedPlan === plan.tier}
-              className={`w-full py-3 rounded-xl text-white font-medium transition-all duration-200 ${
+              className={`w-full py-3 rounded-xl text-white font-medium transition-all duration-200 cursor-pointer ${
                 submitting && selectedPlan === plan.tier
                   ? "bg-gray-400 cursor-not-allowed"
                   : plan.highlight

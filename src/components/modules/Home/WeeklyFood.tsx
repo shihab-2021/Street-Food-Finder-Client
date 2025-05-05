@@ -14,6 +14,7 @@ export default function WeeklyFood() {
   const { data: posts, isLoading } = useGetAllPostQuery(undefined, {
     refetchOnFocus: true,
   });
+  console.log(posts);
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 font-arima">
       <h2 className="text-2xl md:text-[37px] tracking-tighter font-semibold">
@@ -36,14 +37,18 @@ export default function WeeklyFood() {
                           src={post.image || "/assets/joinUs.png"}
                           width={500}
                           height={500}
-                          alt="Gopal Mishthan Bhandar ki Daal Kachauri"
-                          //   onError={(e) =>
-                          //     (e.currentTarget.src =
-                          //       "https://s3-ap-southeast-1.amazonaws.com/img.tasteofcity.com/tasteimages/taste_blank.jpg")
-                          //   }
+                          alt="food image"
                           className="w-full h-[150px] object-cover"
                         />
                       </Link>
+                      {/* Like & Comment Section */}
+                      {post?.isPremium && (
+                        <div className="absolute top-2 right-2">
+                          <span className="p-1 text-xs bg-[#FFD700] mx-2 text-yellow-900 shadow-lg rounded font-bold">
+                            PRO
+                          </span>
+                        </div>
+                      )}
 
                       {/* Footer */}
                       <Link href={`/postDetails/${post.id}`}>

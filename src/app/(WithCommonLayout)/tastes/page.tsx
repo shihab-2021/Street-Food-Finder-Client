@@ -55,8 +55,6 @@ export default function Tastes() {
     return matchesSearch && matchesCategory;
   });
 
-  console.log(meals);
-
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 mt-20 font-sansita">
       {/* Filters Section */}
