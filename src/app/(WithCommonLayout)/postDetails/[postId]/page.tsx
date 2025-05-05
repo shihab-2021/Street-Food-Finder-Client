@@ -69,12 +69,14 @@ export default function PostDetails({
       post?.reviews?.find((review: any) => review?.userId === profile?.data?.id)
         ?.rating
     );
-    if (post?.isPremium) {
+    if (post && post?.isPremium) {
       if (profile?.data?.isPremium) {
         setLoading(false);
       } else {
         router.push("/subscription");
       }
+    } else {
+      if (post && !post?.isPremium) setLoading(false);
     }
   }, [post, profile, router]);
 

@@ -38,6 +38,7 @@ export default function NavbarClient() {
   const navItems: NavItem[] = [
     { name: "Tastes", path: "/tastes", icon: Salad },
     { name: "Pro Posts", path: "/proPosts", icon: Salad },
+    { name: "Add Taste", path: "/addtaste", icon: Salad },
   ];
 
   // Handle scroll effect

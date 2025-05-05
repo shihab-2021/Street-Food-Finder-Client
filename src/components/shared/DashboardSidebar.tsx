@@ -12,6 +12,7 @@ import {
   ListOrdered,
   ListOrderedIcon,
   LogOutIcon,
+  MenuSquare,
   Salad,
   ScrollText,
   ShoppingCart,
@@ -97,6 +98,11 @@ export const visitorRoutes = [
     path: "/dashboard/customer/profile",
     name: "My Profile",
     icon: UserPen,
+  },
+  {
+    path: "/dashboard/customer/addTaste",
+    name: "Add Taste",
+    icon: MenuSquare,
   },
 ];
 
