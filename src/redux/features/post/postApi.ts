@@ -7,19 +7,21 @@ const postApi = baseApi.injectEndpoints({
         url: "/post/get-approved-post",
         method: "GET",
       }),
+      providesTags: ["posts", "post"],
     }),
     getProPost: builder.query({
       query: () => ({
         url: "/post/get-premium-post",
         method: "GET",
       }),
+      providesTags: ["posts", "post"],
     }),
     getSingleApprovedPost: builder.query({
       query: (id: string) => ({
         url: `/post/get-approved-post/${id}`,
         method: "GET",
       }),
-      providesTags: [],
+      providesTags: ["post", "posts"],
     }),
   }),
 });

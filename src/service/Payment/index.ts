@@ -88,7 +88,6 @@ export const initiatePayment = async (
 
 export const validatePayment = async (query: any) => {
   try {
-  
     if (!process.env.NEXT_PUBLIC_BASE_API) {
       throw new Error(
         "Environment variable NEXT_PUBLIC_BASE_API is not defined"
@@ -96,14 +95,12 @@ export const validatePayment = async (query: any) => {
     }
 
     const apiUrl = `${process.env.NEXT_PUBLIC_BASE_API}/payment/ipn?${query}`;
-    console.log("API URL:", apiUrl);
 
     const res = await fetch(apiUrl, {
       method: "POST",
     });
 
     const result = await res.json();
-    console.log("Validation response:", result);
 
     if (!res.ok) {
       return {

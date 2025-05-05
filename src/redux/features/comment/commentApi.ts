@@ -8,7 +8,7 @@ const commentApi = baseApi.injectEndpoints({
         method: "POST",
         body: commentData,
       }),
-      invalidatesTags: ["comments"],
+      invalidatesTags: ["comments", "post", "posts"],
     }),
     getSinglePostComment: builder.query({
       query: (id: string) => ({
