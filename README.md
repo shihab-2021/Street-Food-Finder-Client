@@ -110,3 +110,5 @@ Street_Food_Discovery_Website/
 │── next-env.d.ts
 │── next.config.ts
 ```
+
+## Happy Coding
