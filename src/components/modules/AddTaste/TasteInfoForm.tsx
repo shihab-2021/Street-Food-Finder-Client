@@ -236,8 +236,6 @@ import Image from "next/image";
 import { getAlLCategory } from "@/service/Category";
 import { toast } from "sonner";
 import { createPost } from "@/service/Posts";
-import { useSelector } from "react-redux";
-import { selectCurrentUser } from "@/redux/features/auth/authSlice";
 
 interface CategoryType {
   id: string;
@@ -257,7 +255,6 @@ export default function TasteForm() {
   const [categories, setCategories] = useState<CategoryType[]>([]);
   const [preview, setPreview] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const user = useSelector(selectCurrentUser);
 
   const form = useForm<ITasteForm>({
     defaultValues: {
@@ -283,7 +280,7 @@ export default function TasteForm() {
     const fetchData = async () => {
       try {
         const res = await getAlLCategory();
-        setCategories(res.data);
+        setCategories(res?.data);
       } catch (error) {
         console.error("Failed to fetch categories:", error);
       }
@@ -332,10 +329,6 @@ export default function TasteForm() {
   // };
 
   const onSubmit: SubmitHandler<ITasteForm> = async (data) => {
-    if (!user) {
-      toast.success("Please login create posts.");
-      return;
-    }
     setIsSubmitting(true);
     try {
       const formData = new FormData();
@@ -370,8 +363,8 @@ export default function TasteForm() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#232536] to-gray-900 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-xl p-8">
+    <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8 mt-20">
+      <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-xl p-8 border font-sansita">
         <h1 className="text-3xl font-bold text-[#232536] mb-6 text-center">
           Create a New Taste
         </h1>

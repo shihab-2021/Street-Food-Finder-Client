@@ -1,21 +1,27 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import {
+  BanknoteX,
   ChevronUp,
   ColumnsSettingsIcon,
+  EllipsisIcon,
   FileCheck,
+  Gem,
   Home,
   LayoutDashboardIcon,
   ListOrdered,
   ListOrderedIcon,
   LogOutIcon,
+  MenuSquare,
   Salad,
   ScrollText,
   ShoppingCart,
   SidebarCloseIcon,
+  SquareCheck,
   SquarePlus,
   UserCircle2,
   UserCog2,
+  UserPen,
 } from "lucide-react";
 import {
   Sidebar,
@@ -41,7 +47,7 @@ import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import Logo from "@/assets/LogoPro.png";
 import Image from "next/image";
-import { useAppSelector } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { logout, useCurrentToken } from "@/redux/features/auth/authSlice";
 
 type TRoute = {
@@ -64,22 +70,22 @@ export const adminRoutes = [
   {
     path: "/dashboard/admin/managePendingPosts",
     name: "Manage Pending Posts",
-    icon: FileCheck,
+    icon: EllipsisIcon,
   },
   {
     path: "/dashboard/admin/manageApprovedPosts",
     name: "Manage Approved Posts",
-    icon: FileCheck,
+    icon: SquareCheck,
   },
   {
     path: "/dashboard/admin/manageRejectedPost",
     name: "Manage Rejected Posts",
-    icon: FileCheck,
+    icon: BanknoteX,
   },
   {
     path: "/dashboard/admin/managePremiumPosts",
     name: "Manage Premium Posts",
-    icon: FileCheck,
+    icon: Gem,
   },
   {
     path: "/dashboard/admin/manageAllPosts",
@@ -89,34 +95,46 @@ export const adminRoutes = [
 ];
 export const visitorRoutes = [
   {
-    path: "/dashboard/customer",
-    name: "Dashboard",
-    icon: LayoutDashboardIcon,
-  },
-  {
-    path: "/dashboard/customer/myCart",
-    name: "My Cart",
-    icon: ShoppingCart,
-  },
-  {
     path: "/dashboard/customer/profile",
     name: "My Profile",
-    icon: Home,
+    icon: UserPen,
   },
   {
-    path: "/dashboard/customer/myOrders",
-    name: "My Orders",
-    icon: ListOrdered,
+    path: "/dashboard/customer/addTaste",
+    name: "Add Taste",
+    icon: MenuSquare,
   },
 ];
 
 export function DashboardSidebar() {
   const { toggleSidebar } = useSidebar();
   const token = useAppSelector(useCurrentToken);
-  const { data: profile } = useProfileQuery(token);
+  // const { data: profile } = useProfileQuery(token);
+  const [profile, setProfile] = useState<any>({});
   const [routes, setRoutes] = useState<TRoute>([]);
   const router = useRouter();
   const pathname = usePathname();
+  const dispatch = useAppDispatch();
+
+  const getCurrentProfile = async () => {
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/user/me`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await res.json();
+      setProfile(data);
+      // return data?.data;
+    } catch (error: any) {
+      return Error(error.message);
+    }
+  };
+
+  useEffect(() => {
+    getCurrentProfile();
+  }, [token]);
 
   useEffect(() => {
     if (profile?.data?.email) {
@@ -217,17 +235,12 @@ export function DashboardSidebar() {
                       <Home className="h-5 w-5" />
                       <span>Home</span>
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => router.push("/mealList")}>
-                      <Salad className="h-5 w-5" />
-                      <span>All Meals</span>
-                    </DropdownMenuItem>
                     <DropdownMenuItem
-                      onClick={() => router.push("/dashboard/editProfile")}
+                      onClick={() => {
+                        dispatch(logout());
+                        router.push("/");
+                      }}
                     >
-                      <UserCog2 className="h-5 w-5" />
-                      <span>Edit Profile</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => logout()}>
                       <LogOutIcon className="h-5 w-5" />
                       <span>Sign out</span>
                     </DropdownMenuItem>

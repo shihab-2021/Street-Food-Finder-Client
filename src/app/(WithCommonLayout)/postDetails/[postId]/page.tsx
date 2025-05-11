@@ -1,6 +1,10 @@
 "use client";
 
-import { selectCurrentUser } from "@/redux/features/auth/authSlice";
+import { useProfileQuery } from "@/redux/features/auth/authApi";
+import {
+  selectCurrentUser,
+  useCurrentToken,
+} from "@/redux/features/auth/authSlice";
 import {
   useAddCommentMutation,
   useGetSinglePostCommentQuery,
@@ -10,11 +14,14 @@ import {
   useAddRatingMutation,
   useAddVoteMutation,
 } from "@/redux/features/rating/ratingApi";
+import { useAppSelector } from "@/redux/hooks";
 import { ThumbsDown, ThumbsUpIcon } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "sonner";
+import Loading from "../../success/loading";
 
 export default function PostDetails({
   params,
@@ -25,6 +32,7 @@ export default function PostDetails({
   const [upVote, setUpVote] = useState(0);
   const [downVote, setDownVote] = useState(0);
   const [postId, setPostId] = useState<string>("");
+  const [loading, setLoading] = useState(true);
   const { data, refetch } = useGetSingleApprovedPostQuery(postId, {
     skip: !postId,
     refetchOnReconnect: true,
@@ -39,6 +47,9 @@ export default function PostDetails({
   const [addVote] = useAddVoteMutation();
   const post = data?.data;
   const user = useSelector(selectCurrentUser);
+  const token = useAppSelector(useCurrentToken);
+  const { data: profile } = useProfileQuery(token);
+  const router = useRouter();
 
   useEffect(() => {
     (async () => {
@@ -54,7 +65,20 @@ export default function PostDetails({
     setDownVote(
       post?.votes?.filter((vote: any) => vote?.voteType === "DOWNVOTE")?.length
     );
-  }, [post]);
+    setRating(
+      post?.reviews?.find((review: any) => review?.userId === profile?.data?.id)
+        ?.rating
+    );
+    if (post && post?.isPremium) {
+      if (profile?.data?.isPremium) {
+        setLoading(false);
+      } else {
+        router.push("/subscription");
+      }
+    } else {
+      if (post && !post?.isPremium) setLoading(false);
+    }
+  }, [post, profile, router]);
 
   const handleCommentSubmit = async () => {
     if (!user) {
@@ -66,6 +90,7 @@ export default function PostDetails({
       const res = await addComment(commentData);
       if (res?.data?.success) {
         toast.success("Comment successfully added!");
+        commentRefetch();
         setComment("");
       }
     } catch (error) {
@@ -89,6 +114,7 @@ export default function PostDetails({
       const res = await addRating(ratingData);
       if (res?.data?.success) {
         toast.success("Rating successfully added!");
+        refetch();
         setIsSubmitting(false);
       }
     } catch (error) {
@@ -108,8 +134,9 @@ export default function PostDetails({
       const res = await addVote(voteData);
       if (res?.data?.success) {
         toast.success("Vote successfully added!");
-        if (voteType === "UPVOTE") setUpVote(upVote + 1);
-        else setDownVote(downVote + 1);
+        refetch();
+        // if (voteType === "UPVOTE") setUpVote(upVote + 1);
+        // else setDownVote(downVote + 1);
         setIsSubmitting(false);
       }
     } catch (error) {
@@ -124,11 +151,9 @@ export default function PostDetails({
   const averageRating =
     ratings?.length > 0 ? (total / ratings?.length)?.toFixed(1) : 0.0;
 
-  console.log(comments);
-  //   console.log(post);
   return (
     <div>
-      {post && (
+      {post && !loading && (
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 mt-20 font-sansita">
           <div>
             <Image
@@ -281,6 +306,7 @@ export default function PostDetails({
           </div>
         </div>
       )}
+      {loading && <Loading />}
     </div>
   );
 }

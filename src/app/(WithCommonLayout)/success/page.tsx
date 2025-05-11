@@ -3,14 +3,24 @@
 
 "use client";
 
+import { useProfileQuery } from "@/redux/features/auth/authApi";
+import { useCurrentToken } from "@/redux/features/auth/authSlice";
+import { useAppSelector } from "@/redux/hooks";
 import Link from "next/link";
+import { useEffect } from "react";
 
 const PaymentSuccess = ({ searchParams }: any) => {
+  const token = useAppSelector(useCurrentToken);
+  const { refetch } = useProfileQuery(token);
+
+  useEffect(() => {
+    refetch();
+  }, [token]);
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-[#232536] text-white p-6">
+    <div className="min-h-screen flex flex-col items-center justify-center font-sansita p-6">
       <div className="text-6xl mb-4 text-[#FFB900]">✅</div>
       <h1 className="text-3xl font-bold mb-2">Payment Successful</h1>
-      <p className="text-gray-300 mb-6">
+      <p className="text-gray-700 mb-6">
         Thank you for your purchase. Your payment was processed successfully.
       </p>
       <Link

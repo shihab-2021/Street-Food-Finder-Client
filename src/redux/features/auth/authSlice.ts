@@ -27,10 +27,13 @@ const authSlice = createSlice({
       state.user = user;
       state.token = token;
       localStorage.setItem("navigateTo", "null");
+      document.cookie = `accessToken=${token}; path=/; secure; samesite=Lax; max-age=86400`;
     },
     logout: (state) => {
       state.user = null;
       state.token = null;
+      document.cookie =
+        "accessToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC; secure; samesite=Lax";
     },
   },
 });

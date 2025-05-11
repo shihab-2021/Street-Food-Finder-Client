@@ -7,37 +7,18 @@ import {
   Menu,
   Salad,
   SearchIcon,
-  ShoppingCart,
   UserCircle2Icon,
-  UserCog2,
   UserPlus,
   X,
 } from "lucide-react";
 import Link from "next/link";
-// import { useProfileQuery } from "@/redux/features/auth/authApi";
 import Logo from "@/assets/LogoProDarkBG.png";
 import Image from "next/image";
-// import { signOut, useSession } from "next-auth/react";
-// import { toast } from "sonner";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { logout, useCurrentToken } from "@/redux/features/auth/authSlice";
 import { useProfileQuery } from "@/redux/features/auth/authApi";
-import { Button } from "../ui/button";
-// import { useAppSelector } from "@/redux/hooks";
-
-// declare module "next-auth" {
-//   interface Session {
-//     user: {
-//       id: string;
-//       email: string;
-//       name?: string;
-//       role?: string;
-//     };
-//     accessToken?: string;
-//     statusCode?: number;
-//   }
-// }
+import { useRouter } from "next/navigation";
 
 interface NavItem {
   name: string;
@@ -49,18 +30,16 @@ export default function NavbarClient() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const token = useAppSelector(useCurrentToken);
-  const { data: profile } = useProfileQuery(token);
+  // const { data: profile } = useProfileQuery(token);
+  const [profile, setProfile] = useState<any>({});
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
   // Navigation items
   const navItems: NavItem[] = [
-    { name: "Meals", path: "/mealList", icon: Salad },
-    // { name: "About", path: "/about", icon: ShoppingCart },
-    // {
-    //   name: "Dashboard",
-    //   path: `${profile?.data?.role === "admin" ? "/admin" : "/user"}`,
-    //   icon: ShoppingCart,
-    // },
+    { name: "Tastes", path: "/tastes", icon: Salad },
+    { name: "Pro Posts", path: "/proPosts", icon: Salad },
+    { name: "Add Taste", path: "/addtaste", icon: Salad },
   ];
 
   // Handle scroll effect
@@ -75,8 +54,28 @@ export default function NavbarClient() {
 
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
-  // const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const toggleProfile = () => setIsProfileOpen(!isProfileOpen);
+
+  const getCurrentProfile = async () => {
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/user/me`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await res.json();
+      setProfile(data);
+      // return data?.data;
+    } catch (error: any) {
+      return Error(error.message);
+    }
+  };
+
+  useEffect(() => {
+    getCurrentProfile();
+  }, [token]);
+
   return (
     <>
       <nav
@@ -140,15 +139,11 @@ export default function NavbarClient() {
                         <LayoutDashboardIcon className="h-5 w-5" />
                         <span>Dashboard</span>
                       </Link>
-                      <Link
-                        href={"/dashboard/editProfile"}
-                        className="flex items-center gap-1 w-full px-4 py-2 text-sm text-gray-700 hover:bg-blue-50"
-                      >
-                        <UserCog2 className="h-5 w-5" />
-                        <span>Edit Profile</span>
-                      </Link>
                       <button
-                        onClick={() => dispatch(logout())}
+                        onClick={() => {
+                          dispatch(logout());
+                          router.push("/");
+                        }}
                         className="flex items-center w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 gap-1"
                       >
                         <LogOutIcon className="h-5 w-5" />
@@ -217,11 +212,9 @@ export default function NavbarClient() {
                   <>
                     <Link
                       href={
-                        profile?.data?.role === "admin"
+                        profile?.data?.role === "ADMIN"
                           ? "/dashboard/admin"
-                          : profile?.data?.role === "provider"
-                          ? "/dashboard/provider"
-                          : "/dashboard/customer"
+                          : "/dashboard/customer/profile"
                       }
                       className="flex items-center space-x-2 text-gray-600 px-4 py-2"
                       onClick={() => setIsOpen(false)}
@@ -229,34 +222,11 @@ export default function NavbarClient() {
                       <LayoutDashboardIcon className="h-5 w-5" />
                       <span>Dashboard</span>
                     </Link>
-                    <Link
-                      href={"/dashboard/editProfile"}
-                      className="flex items-center gap-1 w-full px-4 py-2 text-sm text-gray-700 hover:bg-blue-50"
-                    >
-                      <UserCog2 className="h-5 w-5" />
-                      <span>Edit Profile</span>
-                    </Link>
                   </>
                 )}
               </div>
               <hr className="border-gray-200 block md:hidden" />
               <div className="space-y-3 pt-2 md:pt-0">
-                <Link
-                  href="/mealList"
-                  className="flex items-center space-x-2 text-gray-600 px-4 py-2"
-                  onClick={() => setIsOpen(false)}
-                >
-                  <SearchIcon className="h-5 w-5" />
-                  <span>Search</span>
-                </Link>
-                <Link
-                  href="/dashboard/customer/myCart"
-                  className="flex items-center space-x-2 text-gray-600 px-4 py-2"
-                  onClick={() => setIsOpen(false)}
-                >
-                  <ShoppingCart className="h-5 w-5" />
-                  {/* <span>Cart ({cartData.totalQuantity})</span> */}
-                </Link>
                 {!token && (
                   <>
                     <Link
@@ -279,7 +249,10 @@ export default function NavbarClient() {
                 )}
                 {token && (
                   <button
-                    onClick={() => dispatch(logout())}
+                    onClick={() => {
+                      dispatch(logout());
+                      router.push("/");
+                    }}
                     className="flex items-center space-x-2 text-gray-600 px-4 py-2"
                   >
                     <LogOut className="h-5 w-5" />

@@ -1,36 +1,114 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🍜 Street Food Discovery Website
 
-## Getting Started
+## 🌐 Live Backend Link
 
-First, run the development server:
+[🔗 Visit Live](https://street-food-website-ten.vercel.app/)
+
+## 🌐 Live Frontend Link
+
+[🔗 Visit Live](https://street-food-one.vercel.app/)
+
+## Description
+
+This project is a web application designed to allow users to discover, post, review, and interact with street food spots. The website caters to multiple user roles, including Normal Users, Premium Users, and Admins, each with varying levels of access and functionality.
+
+![Street Food Discovery ](https://i.ibb.co.com/gLMztPDV/Website-Mockup.png)
+
+## Technology Used
+
+### Frontend:
+
+- **NextJs ):** For building UI components.
+- **React :** For building UI components.
+- **TypeScript:** For type safety and better developer experience.
+- **TailwindCSS:** For styling and responsive design.
+- **Redux Toolkit:** For state management.
+- **Recharts:** For data visualization in dashboards.
+- **SanCdn :** For styling and responsive design.
+- **Sonner:** For toast notifications.
+
+## Prerequisites
+
+Make sure you have the following installed:
+
+- **Node.js** (version 16 or above)
+- **npm** or **yarn**
+- **MongoDB instance** (local or cloud-based)
+
+## Installation
+
+1. **Clone the repository:**
+
+```bash
+git clone <repository-url>
+cd <repository-folder>
+```
+
+2. **Install dependencies:**
+
+```bash
+npm install
+```
+
+## Scripts
+
+- **Start Development Server:**
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Build for Production:**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Folder Structure
 
-## Learn More
+```bash
+Street_Food_Discovery_Website/
+│── .next/
+│── .vercel/
+│── node_modules/
+│── public/
+│── src/
+│ ├── app/
+| | │── (withCommonlayout)
+│ | | ├── (home)
+│ | | ├── addTaste
+│ | | ├── postDetails
+│ | | ├── providers
+│ | | ├── register
+│ | | ├── subcription
+| | │── (withDashboardlayout)
+│ | | ├── dashboard
+| | | |     ├── admin
+| | | |     ├── customer
+│ | | ├── layout.tsx
+| | │── layout.tsx
+| | │── global.css
+| | │── register
+│ │ ├── error.tsx
+│ │ ├── favicon.png
+│ │ ├── layout.tsx
+│ │ ├── loading.tsx
+│ │ ├── not-found.tsx
+│ ├── assets/
+│ ├── components/
+│ ├── hooks/
+│ ├── services/
+│ │ ├── Redux
+│ │ ├── store.ts
+│ │ ├── storage.ts
+│ ├── lib/
+│ │ ├── utils.ts
+│ ├── utils/
+│── .env
+│── .gitignore
+│── eslint.config.mjs
+│── next-env.d.ts
+│── next.config.ts
+```
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Happy Coding
