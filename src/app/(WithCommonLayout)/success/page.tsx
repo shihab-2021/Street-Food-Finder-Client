@@ -3,9 +3,19 @@
 
 "use client";
 
+import { useProfileQuery } from "@/redux/features/auth/authApi";
+import { useCurrentToken } from "@/redux/features/auth/authSlice";
+import { useAppSelector } from "@/redux/hooks";
 import Link from "next/link";
+import { useEffect } from "react";
 
 const PaymentSuccess = ({ searchParams }: any) => {
+  const token = useAppSelector(useCurrentToken);
+  const { refetch } = useProfileQuery(token);
+
+  useEffect(() => {
+    refetch();
+  }, [token]);
   return (
     <div className="min-h-screen flex flex-col items-center justify-center font-sansita p-6">
       <div className="text-6xl mb-4 text-[#FFB900]">✅</div>

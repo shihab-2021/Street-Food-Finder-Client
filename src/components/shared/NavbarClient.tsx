@@ -30,7 +30,8 @@ export default function NavbarClient() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const token = useAppSelector(useCurrentToken);
-  const { data: profile } = useProfileQuery(token);
+  // const { data: profile } = useProfileQuery(token);
+  const [profile, setProfile] = useState<any>({});
   const dispatch = useAppDispatch();
   const router = useRouter();
 
@@ -54,6 +55,26 @@ export default function NavbarClient() {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const toggleProfile = () => setIsProfileOpen(!isProfileOpen);
+
+  const getCurrentProfile = async () => {
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/user/me`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await res.json();
+      setProfile(data);
+      // return data?.data;
+    } catch (error: any) {
+      return Error(error.message);
+    }
+  };
+
+  useEffect(() => {
+    getCurrentProfile();
+  }, [token]);
 
   return (
     <>

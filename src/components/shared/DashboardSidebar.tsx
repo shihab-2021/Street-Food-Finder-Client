@@ -109,11 +109,32 @@ export const visitorRoutes = [
 export function DashboardSidebar() {
   const { toggleSidebar } = useSidebar();
   const token = useAppSelector(useCurrentToken);
-  const { data: profile } = useProfileQuery(token);
+  // const { data: profile } = useProfileQuery(token);
+  const [profile, setProfile] = useState<any>({});
   const [routes, setRoutes] = useState<TRoute>([]);
   const router = useRouter();
   const pathname = usePathname();
   const dispatch = useAppDispatch();
+
+  const getCurrentProfile = async () => {
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/user/me`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await res.json();
+      setProfile(data);
+      // return data?.data;
+    } catch (error: any) {
+      return Error(error.message);
+    }
+  };
+
+  useEffect(() => {
+    getCurrentProfile();
+  }, [token]);
 
   useEffect(() => {
     if (profile?.data?.email) {
