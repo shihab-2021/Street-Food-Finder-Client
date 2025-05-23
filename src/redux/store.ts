@@ -2,6 +2,7 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { baseApi } from "./api/baseApi";
 import storage from "redux-persist/lib/storage";
 import authReducer from "./features/auth/authSlice";
+import deviceReducer from "./features/device/deviceSlice";
 import {
   persistReducer,
   persistStore,
@@ -17,6 +18,7 @@ import {
 export const rootReducer = combineReducers({
   [baseApi.reducerPath]: baseApi.reducer,
   auth: authReducer,
+  isOpen: deviceReducer,
   //   cart: cartReducer,
 });
 
