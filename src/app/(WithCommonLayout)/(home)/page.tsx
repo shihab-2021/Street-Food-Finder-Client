@@ -1,4 +1,5 @@
 import Categories from "@/components/modules/Home/Categories";
+import { FAQ } from "@/components/modules/Home/FAQ";
 import HeroSection from "@/components/modules/Home/HeroSection";
 import JoinUs from "@/components/modules/Home/JoinUs";
 import PopularFood from "@/components/modules/Home/PopularFood";
@@ -12,6 +13,7 @@ export default function Home() {
       <JoinUs />
       <Categories />
       <WeeklyFood />
+      <FAQ />
       {/* <WhyMealMart />
       <StartShopping />
       <FAQ /> */}

@@ -20,6 +20,11 @@ import { toast } from "sonner";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 
+interface LoginForm {
+  email: string;
+  password: string;
+}
+
 const LoginPage = () => {
   const form = useForm();
   const [login] = useLoginMutation();
@@ -29,8 +34,14 @@ const LoginPage = () => {
   const router = useRouter();
 
   const {
+    setValue,
     formState: { isSubmitting },
   } = form;
+
+  const setPresetValues = (values: LoginForm) => {
+    setValue("email", values?.email);
+    setValue("password", values?.password);
+  };
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
@@ -66,6 +77,35 @@ const LoginPage = () => {
                 <p className="font-extralight text-sm text-gray-600">
                   Please sign in to continue to your account
                 </p>
+              </div>
+            </div>
+            <div className="bg-gray-50 dark:bg-gray-800/50 p-6 rounded-lg mb-8">
+              <h1 className="text-lg font-bold mb-4">Quick Access Demos</h1>
+              <div className="flex flex-wrap gap-3">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() =>
+                    setPresetValues({
+                      email: "elon@gmail.com",
+                      password: "123456",
+                    })
+                  }
+                >
+                  User
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() =>
+                    setPresetValues({
+                      email: "adminadmin@gmail.com",
+                      password: "12345678",
+                    })
+                  }
+                >
+                  Admin
+                </Button>
               </div>
             </div>
             <Form {...form}>

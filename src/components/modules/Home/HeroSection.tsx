@@ -20,7 +20,7 @@ export default async function HeroSection() {
   return (
     <div id="carousel" className="font-arima">
       <HeroHelper>
-        <CarouselContent className="max-h-[100vh]">
+        <CarouselContent className="max-h-[85vh]">
           {[
             SlideImg1,
             SlideImg2,
@@ -30,7 +30,7 @@ export default async function HeroSection() {
             SlideImg6,
           ].map((image, index) => (
             <CarouselItem key={index} className="relative overflow-hidden">
-              <div className="relative h-[100vh] overflow-hidden">
+              <div className="relative h-[85vh] overflow-hidden">
                 {/* Premium image treatment */}
                 <Image
                   className="w-full h-full object-cover object-center transition-transform duration-700 hover:scale-105"
